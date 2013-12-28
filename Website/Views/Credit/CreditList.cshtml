@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Credit List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="indicator"></div>
+<div class="panel">
+    <fieldset>
+        <legend>Credit Information</legend>
+        <div class="records-panel">
+            <div class="recordlist-loader"></div>
+            <div class="record-list"></div>
+            <div style="clear:both;"></div>
+        </div>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        BindCreditInfoList();
+    });    
+
+    function BindCreditInfoList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetCreditInfoList", "Credit")",
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                // Renter the records
+                $(".record-list").html(data.html);
+                $('#recordList').dataTable(
+                    //{
+                    //    "sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                    //    "oTableTools": {
+                    //        "aButtons": [
+                    //            "copy",
+                    //            "print",
+                    //            {
+                    //                "sExtends": "collection",
+                    //                "sButtonText": 'Save <span class="caret" />',
+                    //                "aButtons": ["csv", "xls", "pdf"]
+                    //            }
+                    //        ]
+                    //    }
+                    //}
+                );
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+</script>

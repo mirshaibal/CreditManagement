@@ -1,0 +1,86 @@
+﻿@model DataObjects.Models.CreditInfo
+@using Helpers
+
+<fieldset>
+        <legend>Credit Information</legend>
+        <table class="form-entry">
+        <tr style="display:none;">
+            <td>
+                Id:
+            </td>
+            <td>
+                <label id="lblCreditInfoId">@Model.CreditInfoId</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Subject:
+            </td>
+            <td>
+                <label id="lblSubject">@Model.Subject</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Branch:
+            </td>
+            <td>
+                <label id="lblBranch">@Model.Branch.Name</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Client:
+            </td>
+            <td>
+                <label id="lblClient">@Model.Client.Name</label>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+<fieldset>
+        <legend>Attach File</legend>  
+        <table id="fileList">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Title</th>
+                        <th style="text-align:left;">File Path</th>
+                    </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CreditFiles)
+                {
+                    <tr>
+                        <td><a title="download" href="@item.FilePath" target="_blank">@item.Title</a></td>
+                        <td>@MvcHtmlString.Create(@item.FilePath)</td>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+</fieldset>
+
+<fieldset>
+    <legend>Review History</legend>  
+    <table id="reviewHistory">
+                <thead>
+        <tr>
+            <th style="text-align:left;">Assign From</th>
+            <th style="text-align:left;">Assign To</th>
+            <th style="text-align:left;">Date</th>
+            <th style="text-align:left;">Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CreditFlows)
+        {
+            <tr>
+                <td>@MvcHtmlString.Create(@item.User.Name.Prep())</td>
+                <td>@MvcHtmlString.Create(@item.User1.Name.Prep())</td>
+                <td>@MvcHtmlString.Create(@item.ActionTime.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.Note)</td>
+            </tr>
+        }
+    </tbody>
+    </table>
+</fieldset>

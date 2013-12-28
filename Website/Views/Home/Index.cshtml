@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="indicator"></div>
+<div class="panel" align="center" style="padding-top:100px;">
+    <table class="form-entry login-panel">
+        <tr>
+            <td colspan="2" align="center">
+                <h3>Login your account</h3>
+            </td>            
+        </tr>
+        <tr>
+            <td>
+                Username:
+            </td>
+            <td>
+                <input id="txtUserName" type="text" name="input">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password:
+            </td>
+            <td>
+                <input id="txtPassword" type="password" name="input">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input name="submit" type="submit"  value="Login" class="login-button fg-button ui-state-default"/>
+            </td>            
+        </tr>
+    </table>
+
+    <div>
+        <ol class="record-list" ></ol>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#menu').hide();
+        $('#header').css('border-bottom', '2px solid gray');
+
+        // Create company
+        $(".login-button").click(function (e) {
+            e.preventDefault();
+
+            var username = $("#txtUserName").val();
+            var password = $("#txtPassword").val();
+            
+            // Show loader
+            showActionLoader(true, 'Saving Credit Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Login", "User")",
+                data: { username: username, password: password },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    $('#menu').show();
+                    $('#header').css('border-bottom', '0px');
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    $('#loggedInUser').html('Logged in user: ' + data);
+
+                    document.location.href = "@Url.Action("HomePage", "Home")";
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+    });
+
+</script>

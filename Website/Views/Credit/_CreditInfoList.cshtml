@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataObjects.Models.CreditInfo>
+@using Helpers
+<table id="recordList">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Client</th>
+                <th>Branch</th>                
+                <th>Assigned</th>
+                <th>Create Date</th>
+                <th>Details</th>
+                <th>Files</th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@MvcHtmlString.Create(@item.Subject)</td>
+                <td>@MvcHtmlString.Create(@item.Client.Name.Prep())</td>
+                <td>@MvcHtmlString.Create(@item.Branch.Name.Prep())</td>                
+                <td>@MvcHtmlString.Create(@item.User.Name.Prep())</td>
+                <td>@MvcHtmlString.Create(@item.CreateTime.ToString())</td>
+                <td>
+                    <a href="/Credit/CreditDetails?creditId=@item.CreditInfoId" title="View details" class="view-details" id="@item.CreditInfoId">View Details</a>
+                </td>
+                <td>
+                    <a href="/Credit/CreditFiles?creditId=@item.CreditInfoId" title="Add files">Attached files (@item.CreditFiles.Count) </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

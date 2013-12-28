@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "AddCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="indicator"></div>
+<div class="panel">
+
+    <fieldset>
+        <legend>Add Files</legend>
+        <form action="/Credit/UploadFile" method="post" enctype="multipart/form-data">
+            <table class="form-entry">
+                <tr style="display:none;">
+                    <td colspan="2">
+                        <input id="txtCreditId" name="lblCreditId" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        File Title:
+                    </td>
+                    <td>
+                        <select id="ddlFileTitle" name="ddlFileTitle">
+                            <option value="Application">Application</option>
+                            <option value="Trade Licence">Trade Licence</option>
+                            <option value="Photograph of the borrowers">Photograph of the borrowers</option>
+                            <option value="Original Title Deed">Original Title Deed</option>
+                            <option value="Bia Deed">Bia Deed</option>
+                            <option value="Mutation Parcha">Mutation Parcha</option>
+                            <option value="C.S Parcha">C.S Parcha</option>
+                            <option value="R.S Parcha">R.S Parcha</option>
+                            <option value="SA Parcha">SA Parcha</option>
+                            <option value="BS Parcha">BS Parcha</option>
+                            <option value="Math Jarip">Math Jarip</option>
+                            <option value="Legal opinion">Legal opinion</option>
+                            <option value="Balance Sheet">Balance Sheet</option>
+                            <option value="Memorandum & Articles Association">Memorandum & Articles Association</option>
+                            <option value="Visit Report">Visit Report</option>
+                            <option value="Valuation Certificate">Valuation Certificate</option>
+                            <option value="Photographs of the property">Photographs of the property</option>
+                            <option value="IRC">IRC</option>
+                            <option value="ERC">ERC</option>
+                            <option value="Others">Others</option>                            
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>File:</td>
+                    <td><input id="file" name="file" type="file" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input name="submit" type="submit"  value="Add Files" class="post-button fg-button ui-state-default"/>
+                    </td>            
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <legend>Attached Files</legend>        
+        <div class="records-panel">
+            <div class="recordlist-loader"></div>
+            <div class="record-list"></div>
+            <div style="clear:both;"></div>
+        </div>
+    </fieldset>    
+    
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        txtCreditId.value = getUrlVars()["creditId"];
+
+        BindCreditFileList();
+
+        @*// Create company
+        $(".post-button").click(function (e) {
+            e.preventDefault();
+
+            // Show loader
+            //showActionLoader(true, 'Saving Credit Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UploadFile", "Credit")",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Hide loader
+                    //showActionLoader(false);
+
+                    BindCreditFileList();
+                        
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });*@
+
+        // Edit company
+        $('.view-details').live("click", function (el, ev) {
+
+            el.preventDefault();
+            var id = $(this).attr('id');
+            
+            window.location = '/Credit/CreditDetails/' + id;
+        });        
+    });
+
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    function BindCreditFileList() {
+
+        var creditId = parseInt(getUrlVars()["creditId"], 10);
+        
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetCreditFileList", "Credit")",
+            cache: false,
+            data: { creditId: creditId },
+            dataType: "json",            
+            success: function (data) {
+                // Renter the records
+                $(".record-list").html(data.html);
+                $('#recordList').dataTable({ "bFilter": false, "bInfo": false, "bPaginate": false, "sPaginationType": "full_numbers" });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }    
+
+</script>

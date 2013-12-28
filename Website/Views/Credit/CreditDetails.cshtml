@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "AddCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="indicator"></div>
+<div class="panel">
+
+    <div id="creditInfo"></div>
+    <div style="clear:both;"></div>        
+
+    <fieldset>
+        <legend>Your Review</legend>
+        <table>
+            <tr>
+                <td style="vertical-align:top;">Note:</td>
+                <td>
+                    <textarea id="txtNote" rows="4" cols="50"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Sent to:</td>
+                <td>
+                    <select id="ddlAssignUser"></select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <input name="submit" type="submit"  value="Assign" class="post-button fg-button ui-state-default"/>
+                            </td>
+                            <td style="padding-left:10px;">
+                                <div id="message"></div>
+                            </td>
+                        </tr>
+                    </table>                    
+                </td>            
+            </tr>
+        </table>        
+    </fieldset>
+    
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var creditId = parseInt(getUrlVars()["creditId"], 10);
+
+        BindCreditInfoById(creditId);
+
+        BindUserList();
+    });
+
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    function BindCreditInfoById(id) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetCreditInfo", "Credit")",
+            cache: false,
+            dataType: "json",            
+            data: { id: id },            
+            success: function (data) {
+                
+                $('#creditInfo').html(data.html);
+                $('#reviewHistory').dataTable({
+                    "bPaginate": false,
+                    "bFilter": false,
+                    "bInfo": false
+                });
+                $('#fileList').dataTable({
+                    "bPaginate": false,
+                    "bFilter": false,
+                    "bInfo": false
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function BindUserList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetUserList", "User")",
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var option = new Option(item.value, item.key);
+                    $('#ddlAssignUser').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    // Create company
+    $(".post-button").click(function (e) {
+        e.preventDefault();
+
+        var creditInfoId = $("#lblCreditInfoId").text();
+        var assignToUserId = $("#ddlAssignUser").val();
+        var note = $("#txtNote").val();
+
+        // Prepare the department object
+        var creditFlow = { CreditInfoId: creditInfoId, AssignToUserId: assignToUserId, Note: note, Status: 1 };
+
+        // Show loader
+        showActionLoader(true, 'Performing actions');
+
+        // Ajax call
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveCreditFlow", "Credit")",
+            data: creditFlow,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+
+                // Hide loader
+                showActionLoader(false);
+
+                // Show message
+                $('#message').html('Your review has been created successfully!').addClass('success-message').show();
+                setTimeout(function () {
+                    $('#message').html('').removeClass('success-message').hide();
+                }, 5000);
+
+            },
+            Error: function () {
+                showError("Error to execute ajax call");
+            }
+        });
+    });
+
+</script>

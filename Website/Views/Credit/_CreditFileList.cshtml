@@ -1,0 +1,23 @@
+﻿@model IEnumerable<DataObjects.Models.CreditFile>
+@using Helpers
+<table id="recordList">
+        <thead>
+            <tr>
+                <th style="text-align:left;">Title</th>
+                <th style="text-align:left;">File Path</th>                
+                <th style="text-align:center;">Delete</th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a title="download" href="@item.FilePath" target="_blank">@item.Title</a></td>
+                <td>@MvcHtmlString.Create(@item.FilePath)</td>
+                <td class="edit-del-column">
+                    <a title="Delete" class="delete" id="delete-@item.CreditFileId"><span class="ui-icon ui-icon-trash"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,306 @@
+﻿@{
+    ViewBag.Title = "AddCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="indicator"></div>
+<div class="panel">
+
+    <div id="tabs">
+      <ul>
+        <li><a href="#tab-1"><span>Credit Proposal</span></a></li>
+        <li><a href="#tab-2"><span>Relationship Summary</span></a></li>
+        <li><a href="#tab-3"><span>Facility Details</span></a></li>
+        <li><a href="#tab-4"><span>CIB Status</span></a></li>
+        <li><a href="#tab-5"><span>Credit Risk Grading</span></a></li>
+        <li><a href="#tab-6"><span>Audit Objection</span></a></li>
+      </ul>
+        <div id="tab-1"> 
+            <table class="form-entry">
+                <tr>
+                    <td>
+                        Branch:
+                    </td>
+                    <td>
+                        <select id="ddlBranch">
+                            <option value="0">Select a branch</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Client:
+                    </td>
+                    <td>
+                        <select id="ddlClient" size="5" style="width:186px;">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Subject:
+                    </td>
+                    <td>
+                        <input id="txtSubject" type="text" />
+                    </td>
+                </tr>            
+            </table>
+        </div>
+        <div id="tab-2"> 
+            <h2>Tab2</h2>       
+        </div>
+        <div id="tab-3"> 
+            <h2>Tab3</h2>       
+        </div>
+        <div id="tab-4"> 
+            <h2>Tab4</h2>       
+        </div>
+        <div id="tab-5"> 
+            <h2>Tab5</h2>       
+        </div>
+        <div id="tab-6"> 
+            <h2>Tab6</h2>       
+        </div>        
+    </div>
+<br />    
+    <fieldset>
+        <legend>Send to Review</legend>
+        <table>
+            <tr>
+                <td>Sent to:</td>
+                <td>
+                    <select id="ddlAssignUser"></select>
+                </td>
+            </tr>
+        </table>        
+    </fieldset>
+</div>
+<div>
+    <table>
+        <tr>
+            <td>
+                <input name="submit" type="submit"  value="Save Credit" class="create-credit-button fg-button ui-state-default"/>
+            </td>
+            <td style="padding-left:10px;">
+                <div id="message"></div>
+            </td>
+        </tr>
+    </table>    
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        // Initialize tabs
+        $("#tabs").tabs();
+
+        // Load groups
+        PopulateBranchList();
+
+        BindUserList();
+
+        // Create company
+        $(".create-credit-button").click(function (e) {
+            e.preventDefault();
+
+            var key = $("#txtId").val();
+            var id = key ? key : 0;
+            var branchId = $("#ddlBranch").val();
+            var clientId = $("#ddlClient").val();
+            var assignUserId = $("#ddlAssignUser").val();
+            var subject = $("#txtSubject").val();            
+            
+            // Prepare the department object
+            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: 1, AssignUserId: assignUserId, Status: 1 };
+            
+            // Show loader
+            showActionLoader(true, 'Saving Credit Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveCreditInfo", "Credit")",
+                data: creditInfo,                
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    // Clear data
+                    clearData();
+
+                    // Show message
+                    $('#message').html('Credit proposal has been created successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#message').html('').removeClass('success-message').hide();
+                    }, 5000);
+                        
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+        $('#ddlBranch').change(function () {
+            
+            var branchId = $('#ddlBranch').val();
+            PopulateClientList(branchId);
+        });
+
+        // Edit company
+        $('.view-details').live("click", function (el, ev) {
+
+            el.preventDefault();
+            var id = $(this).attr('id');
+            
+            window.location = '/Credit/CreditDetails/' + id;
+        });
+
+        // Edit company
+        $('.edit').live("click", function (el, ev) {
+            el.preventDefault();
+            var id = $(this).attr('id').replace('edit-', '');
+
+            BindEmployee(id);            
+        });
+
+        // Delete company
+        $('.delete').live("click", function (el, ev) {
+            el.preventDefault();
+            var id = $(this).attr('id').replace('delete-', '');
+            
+            DeleteEmployee(id);
+        });
+
+        // Clear data
+        $('.clear-button').click(function (el, ev) {            
+            clearData();
+        });
+    });
+
+    function PopulateBranchList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetBranchList", "Credit")",                
+                cache: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        var option = new Option(item.value, item.key);
+                        $('#ddlBranch').append(option);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    showError("Error to execute ajax call");
+                }
+        });
+    }
+
+    function PopulateClientList(branchId) {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetClientList", "Credit")",
+            cache: false,
+            dataType: "json",
+            data: { branchId: branchId },            
+            success: function (data) {
+                $('#ddlClient').empty();
+                $.each(data, function (i, item) {
+                    var option = new Option(item.value, item.key);
+                    $('#ddlClient').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }    
+
+    function BindUserList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetUserList", "User")",
+            cache: false,
+            dataType: "json",            
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var option = new Option(item.value, item.key);
+                    $('#ddlAssignUser').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function BindEmployeeTypeList() {
+
+        // Ajax call
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetEmployeeTypeList", "Employee")",
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var option = new Option(item.Name, item.EmployeeTypeId);
+                    $('#ddlEmployeeType').append(option);
+                });                
+            },
+            error: function (error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }//end loadCompany
+
+    function BindEmployee(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetEmployee", "Employee")",
+            cache: false,
+            dataType: "json",
+            data: {id: id},
+            success: function (data) {                
+                txtId.value = data.EmployeeId;
+                txtName.value = data.Name;
+                ddlEmployeeType.value = data.EmployeeTypeId;
+                ckbOT.checked = data.IsOTApplicable;
+            },
+            error: function () {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function DeleteEmployee(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("DeleteEmployee", "Employee")",
+            cache: false,
+            dataType: "json",
+            data: { id: id },
+            success: function (data) {
+
+                BindRecordList();
+            },
+            error: function () {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function clearData() {
+        $("#txtId").val('');
+        $("#txtInfo").val('');
+        $("#ddlClient").empty();               
+    }
+
+</script>

@@ -1,0 +1,31 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+<div class="panel">
+    <header>
+    <p>Sorry, an error occurred while processing your request.</p>
+    </header>
+    <ol class="timeline">
+        <li class="item" style="display: list-item">
+            <p>
+                An error occurred while processing the action @Model.ActionName from @Model.ControllerName
+            </p>
+            <footer>
+                    @if (Model.Exception != null)
+                    {
+                        <text>
+                            <br/>Exception message: @Model.Exception.ToString()
+                        </text>
+                    }
+            </footer>
+        </li>
+    </ol>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showMainMenu(true);
+    });
+</script>

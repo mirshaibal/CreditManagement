@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="@Url.Action("Rss2Feed", "TextNotes", null, "http")" />
+    <link href="@Url.Content("~/Content/MyNotes.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/sunny/jquery-ui-1.8.14.custom.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.6.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.14.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/modernizr-2.0.6.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/json2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/date.format.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/header.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/Site/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Plugin/datatables/js/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Plugin/datatables/js/jquery.js")" type="text/javascript"></script>
+    <link href="~/Scripts/Plugin/datatables/css/demo_table.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="page">
+        @*<header>
+            
+            <div id="logindisplay">
+               [ @Html.ActionLink("Updates", "GetFeed", "RssReaderAsync") ]
+            </div>
+            
+        </header>*@
+        <div id="header">
+            <div style="border:1px solid gray; padding:20px; margin-bottom:20px;">
+                <div class="menu clearfix">
+                    <nav>
+                        <ul id="jsddm">
+                            <li id="homemenu">@Html.ActionLink("Home", "Index", "TextNotes")</li>
+                            <li id="optmenu">@MvcHtmlString.Create("<a href='#'>Company</a>")
+                                    <ul>
+                                        <li>@Html.ActionLink("Create Group", "CreateGroup", "Company")</li>
+                                        <li>@Html.ActionLink("Create Company", "CreateCompany", "Company")</li>                                        
+                                    </ul>
+                            </li>
+                            <li id="aboutmenu">@Html.ActionLink("About", "About", "TextNotes")</li>
+                        </ul>
+                    </nav>
+            </div>        
+            </div>                      
+        </div>
+        <div id="content">
+            @RenderBody()
+        </div>
+        @*<footer>
+            <a href="http://google.com">Online bus ticketing system</a>
+        </footer>*@
+    </div>
+</body>
+</html>

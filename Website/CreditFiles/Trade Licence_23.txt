@@ -1,0 +1,2 @@
+. CalendarMaster and Detail Table can be combine into one table.
+. No need a reference in Employee table

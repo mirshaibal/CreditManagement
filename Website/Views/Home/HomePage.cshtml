@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "HomePage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<fieldset>
+        <legend>Credit Proposal</legend>
+        <table>
+            <tr>
+                <td>Proposal pending: &nbsp;</td>
+                <td>
+                    <b><a href="/Credit/CreditList" id="pendingProposalCount"></a></b>
+                </td>
+            </tr>
+            @if ((Session["User"] as DataObjects.Models.User).Role.Name.ToLower() == "md" || (Session["User"] as DataObjects.Models.User).Role.Name.ToLower() == "board")
+            {
+                <tr>
+                    <td>All proposal: &nbsp;</td>
+                    <td>
+                        <b><a href="/Credit/CreditList" id="allProposalCount"></a></b>
+                    </td>
+                </tr>
+            }
+        </table>        
+</fieldset>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        GetCreditProposalCount();        
+    });
+
+    function GetCreditProposalCount() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetCreditProposalCountByUser", "Credit")",
+            cache: false,
+            dataType: "json",            
+            success: function (data) {
+                $('#pendingProposalCount').text(data.myPendingCount);
+                $('#allProposalCount').text(data.allCount);
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+</script>
