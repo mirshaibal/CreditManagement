@@ -17,45 +17,6 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.Subject)
                 .HasMaxLength(200);
 
-            this.Property(t => t.BorrowerName)
-                .HasMaxLength(200);
-
-            this.Property(t => t.ProposedFacility)
-                .HasMaxLength(200);
-
-            this.Property(t => t.BranchProposalRef)
-                .HasMaxLength(200);
-
-            this.Property(t => t.BranchProposalDate)
-                .HasMaxLength(200);
-
-            this.Property(t => t.HOReceivedDate)
-                .HasMaxLength(200);
-
-            this.Property(t => t.DateOfAccountOpening)
-                .HasMaxLength(200);
-
-            this.Property(t => t.ClientName)
-                .HasMaxLength(50);
-
-            this.Property(t => t.RegisterAddress)
-                .HasMaxLength(200);
-
-            this.Property(t => t.CorporateAddress)
-                .HasMaxLength(200);
-
-            this.Property(t => t.FactoryAddress)
-                .HasMaxLength(200);
-
-            this.Property(t => t.NatureOfBusiness)
-                .HasMaxLength(200);
-
-            this.Property(t => t.Products)
-                .HasMaxLength(200);
-
-            this.Property(t => t.CapitalStructure)
-                .HasMaxLength(50);
-
             // Table & Column Mappings
             this.ToTable("CreditInfo");
             this.Property(t => t.CreditInfoId).HasColumnName("CreditInfoId");
@@ -67,20 +28,6 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Subject).HasColumnName("Subject");
             this.Property(t => t.CreateTime).HasColumnName("CreateTime");
-            this.Property(t => t.BorrowerName).HasColumnName("BorrowerName");
-            this.Property(t => t.ApplicationDate).HasColumnName("ApplicationDate");
-            this.Property(t => t.ProposedFacility).HasColumnName("ProposedFacility");
-            this.Property(t => t.BranchProposalRef).HasColumnName("BranchProposalRef");
-            this.Property(t => t.BranchProposalDate).HasColumnName("BranchProposalDate");
-            this.Property(t => t.HOReceivedDate).HasColumnName("HOReceivedDate");
-            this.Property(t => t.DateOfAccountOpening).HasColumnName("DateOfAccountOpening");
-            this.Property(t => t.ClientName).HasColumnName("ClientName");
-            this.Property(t => t.RegisterAddress).HasColumnName("RegisterAddress");
-            this.Property(t => t.CorporateAddress).HasColumnName("CorporateAddress");
-            this.Property(t => t.FactoryAddress).HasColumnName("FactoryAddress");
-            this.Property(t => t.NatureOfBusiness).HasColumnName("NatureOfBusiness");
-            this.Property(t => t.Products).HasColumnName("Products");
-            this.Property(t => t.CapitalStructure).HasColumnName("CapitalStructure");
 
             // Relationships
             this.HasOptional(t => t.Branch)

@@ -36,6 +36,7 @@ namespace DataObjects.Models.Mapping
             this.ToTable("Users");
             this.Property(t => t.UserId).HasColumnName("UserId");
             this.Property(t => t.RoleId).HasColumnName("RoleId");
+            this.Property(t => t.BranchId).HasColumnName("BranchId");
             this.Property(t => t.UserName).HasColumnName("UserName");
             this.Property(t => t.Password).HasColumnName("Password");
             this.Property(t => t.Name).HasColumnName("Name");
@@ -46,6 +47,9 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.ActionTime).HasColumnName("ActionTime");
 
             // Relationships
+            this.HasOptional(t => t.Branch)
+                .WithMany(t => t.Users)
+                .HasForeignKey(d => d.BranchId);
             this.HasRequired(t => t.Role)
                 .WithMany(t => t.Users)
                 .HasForeignKey(d => d.RoleId);

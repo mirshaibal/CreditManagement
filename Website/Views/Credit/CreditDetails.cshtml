@@ -13,9 +13,9 @@
         <legend>Your Review</legend>
         <table>
             <tr>
-                <td style="vertical-align:top;">Note:</td>
+                <td style="vertical-align:top;">Comment:</td>
                 <td>
-                    <textarea id="txtNote" rows="4" cols="50"></textarea>
+                    <textarea id="txtComment" rows="4" cols="50"></textarea>
                 </td>
             </tr>
             <tr>
@@ -118,10 +118,10 @@
 
         var creditInfoId = $("#lblCreditInfoId").text();
         var assignToUserId = $("#ddlAssignUser").val();
-        var note = $("#txtNote").val();
+        var comment = $("#txtComment").val();
 
         // Prepare the department object
-        var creditFlow = { CreditInfoId: creditInfoId, AssignToUserId: assignToUserId, Note: note, Status: 1 };
+        var creditFlow = { CreditInfoId: creditInfoId, AssignToUserId: assignToUserId, Comment: comment };
 
         // Show loader
         showActionLoader(true, 'Performing actions');

@@ -27,11 +27,55 @@ namespace Website.Controllers
 
         public JsonResult GetUserList()
         {
-            var userList = (from u in _dbContext.Users
+            var user = Session["User"] as User;
+
+            if (user.Role.Name.ToLower() == "executive")
+            {
+                var userList1 = (from u in _dbContext.Users
+                                where u.Role.Name.ToLower() == "branch manager" && u.BranchId == user.BranchId
                                 orderby u.Name
                                 select new { key = u.UserId, value = u.Name }).ToList();
 
-            return Json(userList);
+                return Json(userList1);
+            }
+            else if (user.Role.Name.ToLower() == "branch manager")
+            {
+                var userList2 = (from u in _dbContext.Users
+                                where u.Role.Name.ToLower() == "credit head"
+                                || (u.Role.Name.ToLower() == "executive" && u.BranchId == user.BranchId)
+                                orderby u.Name
+                                select new { key = u.UserId, value = u.Name }).ToList();
+
+                return Json(userList2);
+            }
+            else if (user.Role.Name.ToLower() == "credit head" || user.Role.Name.ToLower() == "md" 
+                || user.Role.Name.ToLower() == "md"
+                || user.Role.Name.ToLower() == "mcc"
+                || user.Role.Name.ToLower() == "board")
+            {
+
+                int creditInfoId = 24; // int.Parse(Request.QueryString.Get("creditId"));
+                var creditInfo = (from c in _dbContext.CreditInfoes
+                                  where c.CreditInfoId == creditInfoId
+                                  select c).FirstOrDefault();
+
+                var userList3 = (from u in _dbContext.Users
+                                 where u.Role.Name.ToLower() == "credit head"
+                                 || u.Role.Name.ToLower() == "md"
+                                 || u.Role.Name.ToLower() == "mcc"
+                                 || u.Role.Name.ToLower() == "board"
+                                 || (u.Role.Name.ToLower() == "branch manager" && u.BranchId == creditInfo.BranchId)
+                                 orderby u.Name
+                                 select new { key = u.UserId, value = u.Name }).ToList();
+
+                return Json(userList3);
+            }
+
+            //var userList = (from u in _dbContext.Users
+            //                    orderby u.Name
+            //                    select new { key = u.UserId, value = u.Name }).ToList();
+
+            return Json(null);
         }
 
         public JsonResult Login(string username, string password)

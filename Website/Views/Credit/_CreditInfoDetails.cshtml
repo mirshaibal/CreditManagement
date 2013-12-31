@@ -68,7 +68,7 @@
             <th style="text-align:left;">Assign From</th>
             <th style="text-align:left;">Assign To</th>
             <th style="text-align:left;">Date</th>
-            <th style="text-align:left;">Note</th>
+            <th style="text-align:left;">Comments</th>
         </tr>
     </thead>
     <tbody>
@@ -78,7 +78,7 @@
                 <td>@MvcHtmlString.Create(@item.User.Name.Prep())</td>
                 <td>@MvcHtmlString.Create(@item.User1.Name.Prep())</td>
                 <td>@MvcHtmlString.Create(@item.ActionTime.ToString())</td>
-                <td>@MvcHtmlString.Create(@item.Note)</td>
+                <td>@MvcHtmlString.Create(@item.Comment)</td>
             </tr>
         }
     </tbody>

@@ -17,8 +17,8 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.AssignFromUserId).HasColumnName("AssignFromUserId");
             this.Property(t => t.AssignToUserId).HasColumnName("AssignToUserId");
             this.Property(t => t.CreditInfoId).HasColumnName("CreditInfoId");
-            this.Property(t => t.Note).HasColumnName("Note");
-            this.Property(t => t.Status).HasColumnName("Status");
+            this.Property(t => t.Comment).HasColumnName("Comment");
+            this.Property(t => t.IsLatestComment).HasColumnName("IsLatestComment");
             this.Property(t => t.ActionTime).HasColumnName("ActionTime");
 
             // Relationships

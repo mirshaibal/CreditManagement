@@ -72,7 +72,6 @@ namespace Website.Controllers
                 creditFlow.AssignFromUserId = loggedInUserId;
                 creditFlow.AssignToUserId = creditInfo.AssignUserId;
                 creditFlow.CreditInfoId = creditInfo.CreditInfoId;
-                creditFlow.Status = 0;
                 creditFlow.ActionTime = DateTime.Now;
                 _dbContext.CreditFlows.Add(creditFlow);
             }
@@ -114,15 +113,24 @@ namespace Website.Controllers
 
             creditFlow.AssignFromUserId = loggedInUserId;
             creditFlow.ActionTime = DateTime.Now;
+            creditFlow.IsLatestComment = true;
             
             try
             {
+                // Set IsLatestComment = false for existing all recores
+                var records = _dbContext.CreditFlows.Where(x => x.CreditInfoId == creditFlow.CreditInfoId).ToList();
+                records.ForEach(r => r.IsLatestComment = false);
+
+                // Update record
                 CreditInfo creditInfo = (from c in _dbContext.CreditInfoes
                                   where c.CreditInfoId == creditFlow.CreditInfoId
                                   select c).FirstOrDefault();
                 creditInfo.AssignUserId = creditFlow.AssignToUserId;
 
+                // Add new records
                 _dbContext.CreditFlows.Add(creditFlow);
+
+                // Save changes
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
@@ -221,6 +229,28 @@ namespace Website.Controllers
             return Json(new
             {
                 html = this.RenderPartialView("_CreditInfoList", list)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetPendingReviewList()
+        {
+            var user = Session["User"] as User;
+
+            if (user == null)
+            {
+                Response.Redirect("/Hope/Index");
+            }
+
+            var list = new List<CreditFlow>();
+
+            list = (from c in _dbContext.CreditFlows
+                        where c.AssignToUserId == user.UserId && c.IsLatestComment == true
+                        orderby c.ActionTime descending
+                        select c).ToList();
+            
+            return Json(new
+            {
+                html = this.RenderPartialView("_CreditInfoPendingList", list)
             }, JsonRequestBehavior.AllowGet);
         }
 

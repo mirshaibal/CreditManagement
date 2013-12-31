@@ -4,6 +4,11 @@
 }
 
 <fieldset>
+        <legend>Pending Review</legend>
+        <div id="pendingReview"></div>    
+</fieldset>
+<br />
+<fieldset>
         <legend>Credit Proposal</legend>
         <table>
             <tr>
@@ -28,6 +33,8 @@
 
     $(document).ready(function () {
 
+        GetPendingReviewList();
+
         GetCreditProposalCount();        
     });
 
@@ -40,6 +47,26 @@
             success: function (data) {
                 $('#pendingProposalCount').text(data.myPendingCount);
                 $('#allProposalCount').text(data.allCount);
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function GetPendingReviewList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetPendingReviewList", "Credit")",
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $('#pendingReview').html(data.html);
+                $('#recordList').dataTable({
+                    "bPaginate": false,
+                    "bFilter": false,
+                    "bInfo": false
+                });
             },
             error: function (xhr, status, error) {
                 showError("Error to execute ajax call");

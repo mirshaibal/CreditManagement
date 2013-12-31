@@ -19,3 +19,4 @@ D:\Development\Projects\CreditManagement\DataObjects\bin\Debug\EntityFramework.d
 D:\Development\Projects\CreditManagement\DataObjects\bin\Debug\EntityFramework.xml
 D:\Development\Projects\CreditManagement\DataObjects\obj\Debug\DataObjects.dll
 D:\Development\Projects\CreditManagement\DataObjects\obj\Debug\DataObjects.pdb
+D:\Development\Projects\CreditManagement\DataObjects\obj\Debug\DataObjects.csprojResolveAssemblyReference.cache

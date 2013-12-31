@@ -1,0 +1,27 @@
+﻿@model IEnumerable<DataObjects.Models.CreditFlow>
+@using Helpers
+<table id="recordList">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Client</th>
+                <th>Came From</th>
+                <th>Notes</th>
+                <th>Date</th>                                
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/Credit/CreditDetails?creditId=@item.CreditInfoId">@item.CreditInfo.Subject</a>
+                </td>                
+                <td>@MvcHtmlString.Create(@item.CreditInfo.Client.Name.Prep())</td>
+                <td>@MvcHtmlString.Create(@item.User.Name)</td>
+                <td>@MvcHtmlString.Create(@item.Comment)</td>
+                <td>@MvcHtmlString.Create(@item.ActionTime.ToString())</td>                
+            </tr>
+        }
+    </tbody>
+</table>

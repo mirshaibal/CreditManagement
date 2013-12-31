@@ -9,8 +9,8 @@ namespace DataObjects.Models
         public Nullable<int> AssignFromUserId { get; set; }
         public Nullable<int> AssignToUserId { get; set; }
         public Nullable<int> CreditInfoId { get; set; }
-        public string Note { get; set; }
-        public Nullable<int> Status { get; set; }
+        public string Comment { get; set; }
+        public Nullable<bool> IsLatestComment { get; set; }
         public Nullable<System.DateTime> ActionTime { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
