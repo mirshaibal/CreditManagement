@@ -11,6 +11,7 @@
                 <th>Status</th>
                 <th>Details</th>
                 <th>Files</th>
+                <th>Edit</th>
             </tr>
     </thead>
     <tbody>
@@ -34,7 +35,10 @@
                     <a href="/Credit/CreditDetails?creditId=@item.CreditInfoId" title="View details" class="view-details" id="@item.CreditInfoId">View Details</a>
                 </td>
                 <td>
-                    <a href="/Credit/CreditFiles?creditId=@item.CreditInfoId" title="Add files">Attached files (@item.CreditFiles.Count) </a>
+                    <a href="/Credit/CreditFiles?creditId=@item.CreditInfoId" title="Add files">Files (@item.CreditFiles.Count) </a>
+                </td>
+                <td>
+                    <a href="/Credit/AddCredit?creditId=@item.CreditInfoId" title="Add files">Edit</a>
                 </td>
             </tr>
         }
