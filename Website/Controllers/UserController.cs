@@ -78,6 +78,24 @@ namespace Website.Controllers
             return Json(null);
         }
 
+        public JsonResult IsLoggedInUserIsManager()
+        {
+            if (Session["User"] != null)
+            {
+                User user = Session["User"] as User;
+                if (user.Role.Name.ToLower() == "branch manager")
+                {
+                    return Json(true);
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+
+            return Json(false);        
+        }
+
         public JsonResult Login(string username, string password)
         {
             var user = (from u in _dbContext.Users

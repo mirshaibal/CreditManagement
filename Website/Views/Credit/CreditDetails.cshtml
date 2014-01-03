@@ -44,6 +44,23 @@
     
 </div>
 
+<div id="dialog" title="Security Check" style="display:none;">
+      <table style="padding:5px;">
+          <tr>
+              <td>Security Password:
+              </td>
+              <td>
+                  <input id="txtSecurityPassword" type="password" name="input">
+              </td>
+          </tr>
+          <tr id="trSecurityMessage" style="display: none;">
+              <td colspan="2" style="text-align:center; color: red; padding-top:5px;">
+                  Invalid security password!
+              </td>
+          </tr>
+      </table>  
+</div>
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -112,6 +129,26 @@
         });
     }
 
+    function IsLoggedInUserIsManager() {
+        var isManager = true;
+        var that = this;
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("IsLoggedInUserIsManager", "User")",
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                isManager = data;
+            },
+            error: function (xhr, status, error) {
+                isManager = false;
+            }
+        });
+
+        return isManager;
+    }
+
     // Create company
     $(".post-button").click(function (e) {
         e.preventDefault();
@@ -126,9 +163,42 @@
         // Show loader
         showActionLoader(true, 'Performing actions');
 
-        //$("#yourdropdownid option:selected").text()
+        // Is logged in user is branch manager
+        var isBranchManager = IsLoggedInUserIsManager();
 
-        // Ajax call
+        if (isBranchManager === true) {
+
+            $("#dialog").dialog({
+                resizable: false,
+                modal: true,
+                buttons: {
+                    Ok: function () {
+
+                        var securityPass = $('#txtSecurityPassword').val();
+                        if (securityPass !== 'pass') {
+                            $('#trSecurityMessage').show();
+                            $('#txtSecurityPassword').clear();
+                            $('#txtSecurityPassword').focus();
+                        }
+                        else {
+                            $('#trSecurityMessage').hide();
+
+                            AssignCreditProposal(creditFlow);
+                            $(this).dialog("close");
+                        }                        
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");                        
+                    }
+                }
+            });
+        }
+        else {
+            AssignCreditProposal(creditFlow);
+        }        
+    });
+
+    function AssignCreditProposal(creditFlow) {
         $.ajax({
             type: "POST",
             url: "@Url.Action("SaveCreditFlow", "Credit")",
@@ -146,11 +216,14 @@
                     $('#message').html('').removeClass('success-message').hide();
                 }, 5000);
 
+                // Navigate to home page
+                document.location.href = "@Url.Action("HomePage", "Home")";
+
             },
             Error: function () {
                 showError("Error to execute ajax call");
             }
         });
-    });
+    }
 
 </script>

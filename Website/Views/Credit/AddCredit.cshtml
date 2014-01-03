@@ -112,15 +112,16 @@
 
         BindUserList();
 
+        // Status
         $('input:radio[name="saveStatus"]').change(
-        function () {
-            if ($(this).is(':checked') && $(this).val() == '1') {
-                $('#trAssignUser').show().css('padding-top', '10px');
-            }
-            else {
-                $('#trAssignUser').hide();
-            }
-        });
+            function () {
+                if ($(this).is(':checked') && $(this).val() == '1') {
+                    $('#trAssignUser').show().css('padding-top', '10px');
+                }
+                else {
+                    $('#trAssignUser').hide();
+                }
+            });
 
         // Create company
         $(".create-credit-button").click(function (e) {
@@ -131,10 +132,11 @@
             var branchId = $("#ddlBranch").val();
             var clientId = $("#ddlClient").val();
             var assignUserId = $("#ddlAssignUser").val();
-            var subject = $("#txtSubject").val();            
+            var subject = $("#txtSubject").val();
+            var status = $('input:radio[name="saveStatus"]').val();
             
             // Prepare the department object
-            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: 1, AssignUserId: assignUserId, Status: 1 };
+            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: 1, AssignUserId: assignUserId, Status: status };
             
             // Show loader
             showActionLoader(true, 'Saving Credit Information');

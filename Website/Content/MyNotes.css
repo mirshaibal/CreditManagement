@@ -695,3 +695,8 @@ html[xmlns] .clearfix {
     font-size: 0.9em !important;
 }
 /*End Override tab css*/
+
+.listTable thead tr th
+{
+    text-align:left;
+}

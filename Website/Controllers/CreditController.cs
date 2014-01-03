@@ -67,13 +67,16 @@ namespace Website.Controllers
 
                 int loggedInUserId = (Session["User"] as User).UserId;
 
-                // Credit flow
-                CreditFlow creditFlow = new CreditFlow();
-                creditFlow.AssignFromUserId = loggedInUserId;
-                creditFlow.AssignToUserId = creditInfo.AssignUserId;
-                creditFlow.CreditInfoId = creditInfo.CreditInfoId;
-                creditFlow.ActionTime = DateTime.Now;
-                _dbContext.CreditFlows.Add(creditFlow);
+                if (creditInfo.Status > 0)
+                {
+                    // Credit flow
+                    CreditFlow creditFlow = new CreditFlow();
+                    creditFlow.AssignFromUserId = loggedInUserId;
+                    creditFlow.AssignToUserId = creditInfo.AssignUserId;
+                    creditFlow.CreditInfoId = creditInfo.CreditInfoId;
+                    creditFlow.ActionTime = DateTime.Now;
+                    _dbContext.CreditFlows.Add(creditFlow);
+                }
             }
             else
             {
