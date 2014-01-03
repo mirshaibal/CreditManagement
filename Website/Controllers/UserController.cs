@@ -105,10 +105,11 @@ namespace Website.Controllers
             if (user != null)
             {                
                 Session["User"] = user;
+                //ViewBag.LoggedInUserId = user.UserId;
             }
 
             //Show the loggedin user name
-            ViewBag.LoggedInUserName = (Session["User"] as User).Name;
+            //ViewBag.LoggedInUserName = (Session["User"] as User).Name;
 
             return Json(user.Name);
         }

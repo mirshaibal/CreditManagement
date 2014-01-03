@@ -56,8 +56,10 @@
     <Compile Include="Models\Mapping\CreditFileMap.cs" />
     <Compile Include="Models\Mapping\CreditFlowMap.cs" />
     <Compile Include="Models\Mapping\CreditInfoMap.cs" />
+    <Compile Include="Models\Mapping\RelationshipSummaryMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />
+    <Compile Include="Models\RelationshipSummary.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

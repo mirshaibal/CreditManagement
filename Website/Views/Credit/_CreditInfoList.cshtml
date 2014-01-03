@@ -8,6 +8,7 @@
                 <th>Branch</th>                
                 <th>Assigned</th>
                 <th>Create Date</th>
+                <th>Status</th>
                 <th>Details</th>
                 <th>Files</th>
             </tr>
@@ -21,6 +22,14 @@
                 <td>@MvcHtmlString.Create(@item.Branch.Name.Prep())</td>                
                 <td>@MvcHtmlString.Create(@item.User.Name.Prep())</td>
                 <td>@MvcHtmlString.Create(@item.CreateTime.ToString())</td>
+                @if(item.Status == 1) 
+                {
+                    <td class="pending">Pending</td>                    
+                } 
+                else 
+                {
+                    <td class="draft">Draft</td>
+                }
                 <td>
                     <a href="/Credit/CreditDetails?creditId=@item.CreditInfoId" title="View details" class="view-details" id="@item.CreditInfoId">View Details</a>
                 </td>

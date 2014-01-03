@@ -4,6 +4,7 @@
 }
 
 <div class="indicator"></div>
+<div style="display:none;" id="loggedInUserId">@ViewBag.LoggedInUserId</div>
 <div class="panel">
 
     <div id="tabs">
@@ -17,6 +18,12 @@
       </ul>
         <div id="tab-1"> 
             <table class="form-entry">
+                <tr style="display: none;">
+                    <td>Id:</td>
+                    <td>
+                        <input id="txtId" type="text" />
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         Branch:
@@ -43,11 +50,101 @@
                     <td>
                         <input id="txtSubject" type="text" />
                     </td>
+                </tr>
+                <tr>
+                    <td>
+                        Details:
+                    </td>
+                    <td>
+                        <input id="txtDetails" rows="4" cols="20" type="text" />
+                    </td>
                 </tr>            
-            </table>
+            </table>            
         </div>
         <div id="tab-2"> 
-            <h2>Tab2</h2>       
+            <table class="form-entry">
+                <tr>
+                    <td>
+                        Nature of Facility:
+                    </td>
+                    <td>
+                        <select id="ddlNatureOfFacility">
+                            <option value="Composite Limit">Composite Limit</option>
+                            <option value="Enhancement of Composite Limit">Enhancement of Composite Limit</option>
+                            <option value="Renewal of Composite Limit">Renewal of Composite Limit</option>
+                            <option value="Renewal with enhancement">Renewal with enhancement</option>                            
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Sanction Date:
+                    </td>
+                    <td>
+                        <input type="text" id="dpSanctionDate">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Funded Limit:
+                    </td>
+                    <td>
+                        <input id="txtFundedLimit" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Non Funded Limit:
+                    </td>
+                    <td>
+                        <input id="txtNonFundedLimit" type="text" />
+                    </td>
+                </tr>   
+                <tr>
+                    <td>
+                        Expiry Date:
+                    </td>
+                    <td>
+                        <input id="dpExpiryDate" type="text" />
+                    </td>
+                </tr>  
+                <tr>
+                    <td>
+                        Reschedule Time:
+                    </td>
+                    <td>
+                        <input id="txtRescheduleTime" type="text" />
+                    </td>
+                </tr> 
+                <tr>
+                    <td>
+                        Reschedule Amount:
+                    </td>
+                    <td>
+                        <input id="txtRescheduleAmount" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Approval Authority:
+                    </td>
+                    <td>
+                        <input id="txtApprovalAuthority" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                        <input id="btnRelationshipSummary" name="submit" type="submit"  value="Add Relationship Summary" class="fg-button ui-state-default"/>
+                    </td>                    
+                </tr>
+                      
+            </table>
+            <br />
+            <div class="relationshipSummaryList"></div>
+            <div style="clear:both;"></div>
         </div>
         <div id="tab-3"> 
             <h2>Tab3</h2>       
@@ -107,6 +204,10 @@
         // Initialize tabs
         $("#tabs").tabs();
 
+        // Initialize date picker
+        $("#dpSanctionDate").datepicker();
+        $("#dpExpiryDate").datepicker();
+
         // Load groups
         PopulateBranchList();
 
@@ -131,12 +232,13 @@
             var id = key ? key : 0;
             var branchId = $("#ddlBranch").val();
             var clientId = $("#ddlClient").val();
-            var assignUserId = $("#ddlAssignUser").val();
-            var subject = $("#txtSubject").val();
+            var loggedInUserId = $('#loggedInUserId').html();
             var status = $('input:radio[name="saveStatus"]').val();
+            var assignUserId = (status === "0") ? loggedInUserId : $("#ddlAssignUser").val();
+            var subject = $("#txtSubject").val();            
             
             // Prepare the department object
-            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: 1, AssignUserId: assignUserId, Status: status };
+            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: loggedInUserId, AssignUserId: assignUserId, Status: status };
             
             // Show loader
             showActionLoader(true, 'Saving Credit Information');

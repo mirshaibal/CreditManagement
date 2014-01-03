@@ -25,6 +25,8 @@ namespace Website.Controllers
             //Show the loggedin user name
             ViewBag.LoggedInUserName = (Session["User"] as User).Name;
 
+            ViewBag.LoggedInUserId = (Session["User"] as User).UserId;
+
             return View();
         }
 
@@ -64,12 +66,17 @@ namespace Website.Controllers
             if (isNew)
             {
                 _dbContext.CreditInfoes.Add(creditInfo);
-
                 int loggedInUserId = (Session["User"] as User).UserId;
 
+                // Relationship summary
+                RelationshipSummary rs = new RelationshipSummary();
+                rs.CreditInfoId = creditInfo.CreditInfoId;
+                //rs.FacilityNature = creditInfo
+
+
+                // Credit flow
                 if (creditInfo.Status > 0)
                 {
-                    // Credit flow
                     CreditFlow creditFlow = new CreditFlow();
                     creditFlow.AssignFromUserId = loggedInUserId;
                     creditFlow.AssignToUserId = creditInfo.AssignUserId;
@@ -150,6 +157,49 @@ namespace Website.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        //[HttpPost]
+        //public JsonResult SaveRelationshipSummary(int creditInfoId)
+        //{
+        //    var isSuccess = true;
+        //    var message = string.Empty;
+
+        //    int loggedInUserId = (Session["User"] as User).UserId;
+
+        //    RelationshipSummary rs = new RelationshipSummary();
+            
+
+        //    try
+        //    {
+        //        // Set IsLatestComment = false for existing all recores
+        //        var records = _dbContext.CreditFlows.Where(x => x.CreditInfoId == creditFlow.CreditInfoId).ToList();
+        //        records.ForEach(r => r.IsLatestComment = false);
+
+        //        // Update record
+        //        CreditInfo creditInfo = (from c in _dbContext.CreditInfoes
+        //                                 where c.CreditInfoId == creditFlow.CreditInfoId
+        //                                 select c).FirstOrDefault();
+        //        creditInfo.AssignUserId = creditFlow.AssignToUserId;
+
+        //        // Add new records
+        //        _dbContext.CreditFlows.Add(creditFlow);
+
+        //        // Save changes
+        //        _dbContext.SaveChanges();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        isSuccess = false;
+        //        message = ex.Message;
+        //    }
+
+        //    return Json(new
+        //    {
+        //        isSuccess = isSuccess,
+        //        message = message,
+        //        html = ""
+        //    }, JsonRequestBehavior.AllowGet);
+        //}
+    
         public JsonResult GetCreditInfo(int id)
         {
             var creditInfo = (from c in _dbContext.CreditInfoes

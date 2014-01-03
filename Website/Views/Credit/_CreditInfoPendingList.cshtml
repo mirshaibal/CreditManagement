@@ -6,6 +6,7 @@
                 <th>Subject</th>
                 <th>Client</th>
                 <th>Assign From</th>
+                <th>Status</th>
                 <th>Notes</th>
                 <th>Date</th>                                
             </tr>
@@ -19,6 +20,14 @@
                 </td>                
                 <td>@MvcHtmlString.Create(@item.CreditInfo.Client.Name.Prep())</td>
                 <td>@MvcHtmlString.Create(@item.User.Name)</td>
+                @if (item.CreditInfo.Status == 1) 
+                {
+                    <td class="pending">Pending</td>                    
+                } 
+                else 
+                {
+                    <td class="draft">Draft</td>
+                }
                 <td>@MvcHtmlString.Create(@item.Comment)</td>
                 <td>@MvcHtmlString.Create(@item.ActionTime.ToString())</td>                
             </tr>

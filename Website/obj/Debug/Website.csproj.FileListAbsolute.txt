@@ -58,6 +58,7 @@ D:\Development\Projects\AttendanceSystem\Website\bin\System.Web.WebPages.Deploym
 D:\Development\Projects\AttendanceSystem\Website\bin\System.Web.WebPages.Razor.xml
 D:\Development\Projects\AttendanceSystem\Website\obj\Debug\Website.dll
 D:\Development\Projects\AttendanceSystem\Website\obj\Debug\Website.pdb
+D:\Development\Projects\CreditManagement\Website\obj\Debug\Website.csprojResolveAssemblyReference.cache
 D:\Development\Projects\CreditManagement\Website\bin\Website.dll
 D:\Development\Projects\CreditManagement\Website\bin\Website.pdb
 D:\Development\Projects\CreditManagement\Website\bin\DataObjects.dll
@@ -85,6 +86,5 @@ D:\Development\Projects\CreditManagement\Website\bin\System.Web.Razor.xml
 D:\Development\Projects\CreditManagement\Website\bin\System.Web.WebPages.xml
 D:\Development\Projects\CreditManagement\Website\bin\System.Web.WebPages.Deployment.xml
 D:\Development\Projects\CreditManagement\Website\bin\System.Web.WebPages.Razor.xml
-D:\Development\Projects\CreditManagement\Website\obj\Debug\Website.csprojResolveAssemblyReference.cache
 D:\Development\Projects\CreditManagement\Website\obj\Debug\Website.dll
 D:\Development\Projects\CreditManagement\Website\obj\Debug\Website.pdb
