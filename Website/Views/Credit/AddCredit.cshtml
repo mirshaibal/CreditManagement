@@ -64,9 +64,21 @@
     </div>
 <br />    
     <fieldset>
-        <legend>Send to Review</legend>
+        <legend>Save Type</legend>
         <table>
             <tr>
+                <td>
+                    Save as:
+                </td>
+                <td>
+                    <input id="rbDraft" type="radio" name="saveStatus" checked="checked" value="0">Draft&nbsp;
+                    <input id="rbPending" type="radio" name="saveStatus" value="1">Sent to review
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="height:5px;"></td>
+            </tr>
+            <tr id="trAssignUser" style="display:none;">
                 <td>Sent to:</td>
                 <td>
                     <select id="ddlAssignUser"></select>
@@ -81,7 +93,7 @@
             <td>
                 <input name="submit" type="submit"  value="Save Credit" class="create-credit-button fg-button ui-state-default"/>
             </td>
-            <td style="padding-left:10px;">
+            <td>
                 <div id="message"></div>
             </td>
         </tr>
@@ -99,6 +111,16 @@
         PopulateBranchList();
 
         BindUserList();
+
+        $('input:radio[name="saveStatus"]').change(
+        function () {
+            if ($(this).is(':checked') && $(this).val() == '1') {
+                $('#trAssignUser').show().css('padding-top', '10px');
+            }
+            else {
+                $('#trAssignUser').hide();
+            }
+        });
 
         // Create company
         $(".create-credit-button").click(function (e) {

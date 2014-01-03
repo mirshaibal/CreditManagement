@@ -155,7 +155,7 @@ namespace Website.Controllers
 
             List<CreditFlow> creditFlowList = (from cf in _dbContext.CreditFlows
                                   where cf.CreditInfoId == id
-                                  orderby cf.ActionTime
+                                  orderby cf.ActionTime descending
                                   select cf).ToList();
 
             creditInfo.CreditFlows = new List<CreditFlow>();
