@@ -1,0 +1,31 @@
+﻿@model IEnumerable<DataObjects.Models.RelationshipSummary>
+@using Helpers
+<table id="recordList">
+        <thead>
+            <tr>
+                <th>Nature of Facility</th>
+                <th>Sanction Date</th>
+                <th>Funded Limit</th>                
+                <th>Non Funded Limit</th>
+                <th>Expiry Date</th>
+                <th>Reschedule Time</th>
+                <th>Reschedule Amount</th>
+                <th>Approval Authority</th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@MvcHtmlString.Create(@item.FacilityNature)</td>
+                <td>@MvcHtmlString.Create(@item.SanctionDate.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.FundedLimit)</td>                
+                <td>@MvcHtmlString.Create(@item.NonFundedLimit)</td>
+                <td>@MvcHtmlString.Create(@item.ExpiryDate.ToString())</td>                
+                <td>@MvcHtmlString.Create(@item.RescheduleTime)</td>                
+                <td>@MvcHtmlString.Create(@item.RescheduleAmount)</td>                
+                <td>@MvcHtmlString.Create(@item.ApprovalAuthority)</td>                
+            </tr>
+        }
+    </tbody>
+</table>

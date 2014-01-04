@@ -712,6 +712,7 @@ html[xmlns] .clearfix {
     font-weight:bold;
     background-color: red;
     color:white;
+<<<<<<< HEAD
     border: 1px solid #fff;
 }
 input
@@ -733,3 +734,12 @@ input
 {
     /*color: #4c3000 !important;*/
 }
+=======
+}
+
+td
+{
+    vertical-align: top;
+    text-align:left;
+}
+>>>>>>> 6a7fa63dd081d63a282c19a80a146c46f0ed4d71
