@@ -60,6 +60,7 @@ namespace Website.Controllers
             var isSuccess = true;
             var message = string.Empty;
             var isNew = creditInfo.CreditInfoId == 0 ? true : false;
+            CreditInfo createdCreditInfo = new CreditInfo();
 
             creditInfo.CreateTime = DateTime.Now;
 
@@ -98,6 +99,11 @@ namespace Website.Controllers
             try
             {
                 _dbContext.SaveChanges();
+
+                createdCreditInfo = (from ci in _dbContext.CreditInfoes
+                                  orderby ci.CreateTime descending
+                                  select ci).FirstOrDefault();
+
             }
             catch (Exception ex)
             {
@@ -107,6 +113,7 @@ namespace Website.Controllers
 
             return Json(new
             {
+                createdCreditInfoId = createdCreditInfo.CreditInfoId,
                 isSuccess = isSuccess,
                 message = message,
                 html = ""
@@ -157,48 +164,46 @@ namespace Website.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //public JsonResult SaveRelationshipSummary(int creditInfoId)
-        //{
-        //    var isSuccess = true;
-        //    var message = string.Empty;
+        [HttpPost]
+        public JsonResult SaveRelationshipSummary(RelationshipSummary rs)
+        {
+            var isSuccess = true;
+            var message = string.Empty;
+            int loggedInUserId = (Session["User"] as User).UserId;
 
-        //    int loggedInUserId = (Session["User"] as User).UserId;
+            try
+            {
+                _dbContext.RelationshipSummaries.Add(rs);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message;
+            }
 
-        //    RelationshipSummary rs = new RelationshipSummary();
-            
+            return Json(new
+            {
+                isSuccess = isSuccess,
+                message = message,
+                html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
 
-        //    try
-        //    {
-        //        // Set IsLatestComment = false for existing all recores
-        //        var records = _dbContext.CreditFlows.Where(x => x.CreditInfoId == creditFlow.CreditInfoId).ToList();
-        //        records.ForEach(r => r.IsLatestComment = false);
+        public JsonResult GetRelationshipSummaryList(int creditId)
+        {
+            //int creditId = int.Parse(Request.QueryString.Get("CreditId").ToString());
 
-        //        // Update record
-        //        CreditInfo creditInfo = (from c in _dbContext.CreditInfoes
-        //                                 where c.CreditInfoId == creditFlow.CreditInfoId
-        //                                 select c).FirstOrDefault();
-        //        creditInfo.AssignUserId = creditFlow.AssignToUserId;
+            var list = (from f in _dbContext.RelationshipSummaries
+                        orderby f.FacilityNature
+                        where f.CreditInfoId == creditId
+                        select f).ToList();
 
-        //        // Add new records
-        //        _dbContext.CreditFlows.Add(creditFlow);
-
-        //        // Save changes
-        //        _dbContext.SaveChanges();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        isSuccess = false;
-        //        message = ex.Message;
-        //    }
-
-        //    return Json(new
-        //    {
-        //        isSuccess = isSuccess,
-        //        message = message,
-        //        html = ""
-        //    }, JsonRequestBehavior.AllowGet);
-        //}
+            return Json(new
+            {
+                html = this.RenderPartialView("_RelationshipSummaryList", list)
+            }, JsonRequestBehavior.AllowGet);
+        }
     
         public JsonResult GetCreditInfo(int id)
         {
@@ -218,6 +223,18 @@ namespace Website.Controllers
             {
                 html = this.RenderPartialView("_CreditInfoDetails", creditInfo)
             }, JsonRequestBehavior.AllowGet);      
+        }
+
+        public JsonResult GetCreditBasicInfo(int creditId)
+        {
+            var creditInfo = (from c in _dbContext.CreditInfoes
+                              where c.CreditInfoId == creditId
+                              select new { Subject = c.Subject, BranchId = c.BranchId, ClientId = c.ClientId,
+                              SubjectDetails = c.SubjectDetails, BorrowerName = c.BorrowerName,
+                              ApplicationDate = c.ApplicationDate, BranchProposalDate = c.BranchProposalDate,
+                              BranchRef = c.BranchRef, ProposedFacility = c.ProposedFacility}).FirstOrDefault();
+
+            return Json(creditInfo, JsonRequestBehavior.AllowGet);        
         }
 
         public JsonResult GetBranchList()
@@ -273,7 +290,7 @@ namespace Website.Controllers
             else
             {
                 list = (from c in _dbContext.CreditInfoes
-                        where c.AssignUserId == user.UserId || c.CreatedUserId == user.UserId
+                        where c.AssignUserId == user.UserId //|| c.CreatedUserId == user.UserId
                         select c).ToList();
             }
 

@@ -17,6 +17,21 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.Subject)
                 .HasMaxLength(200);
 
+            this.Property(t => t.BorrowerName)
+                .HasMaxLength(200);
+
+            this.Property(t => t.ProposedFacility)
+                .HasMaxLength(200);
+
+            this.Property(t => t.BranchRef)
+                .HasMaxLength(50);
+
+            this.Property(t => t.ApplicationDate)
+                .HasMaxLength(50);
+
+            this.Property(t => t.BranchProposalDate)
+                .HasMaxLength(50);
+
             // Table & Column Mappings
             this.ToTable("CreditInfo");
             this.Property(t => t.CreditInfoId).HasColumnName("CreditInfoId");
@@ -28,6 +43,12 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Subject).HasColumnName("Subject");
             this.Property(t => t.CreateTime).HasColumnName("CreateTime");
+            this.Property(t => t.SubjectDetails).HasColumnName("SubjectDetails");
+            this.Property(t => t.BorrowerName).HasColumnName("BorrowerName");
+            this.Property(t => t.ProposedFacility).HasColumnName("ProposedFacility");
+            this.Property(t => t.BranchRef).HasColumnName("BranchRef");
+            this.Property(t => t.ApplicationDate).HasColumnName("ApplicationDate");
+            this.Property(t => t.BranchProposalDate).HasColumnName("BranchProposalDate");
 
             // Relationships
             this.HasOptional(t => t.Branch)

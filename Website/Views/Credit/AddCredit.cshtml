@@ -9,7 +9,7 @@
 
     <div id="tabs">
       <ul>
-        <li><a href="#tab-1"><span>Credit Proposal</span></a></li>
+        <li><a href="#tab-1"><span>Basic Info</span></a></li>
         <li><a href="#tab-2"><span>Relationship Summary</span></a></li>
         <li><a href="#tab-3"><span>Facility Details</span></a></li>
         <li><a href="#tab-4"><span>CIB Status</span></a></li>
@@ -35,11 +35,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="vertical-align:top;">
                         Client:
                     </td>
                     <td>
-                        <select id="ddlClient" size="5" style="width:186px;">
+                        <select id="ddlClient" size="5" style="width:320px;">
                         </select>
                     </td>
                 </tr>
@@ -48,18 +48,95 @@
                         Subject:
                     </td>
                     <td>
-                        <input id="txtSubject" type="text" />
+                        <input id="txtSubject" type="text" style="width: 313px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align:top;">
+                        Subject Details:
+                    </td>
+                    <td>
+                        <textarea  id="txtSubjectDetails" rows="4" cols="50"></textarea>
+                    </td>
+                </tr>   
+                <tr>
+                    <td>
+                        Borrower Name:
+                    </td>
+                    <td>
+                        <input id="txtBorrowerName" type="text" style="width: 313px" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Details:
+                        Proposed Facility:
                     </td>
                     <td>
-                        <input id="txtDetails" rows="4" cols="20" type="text" />
+                        <input id="txtProposedFacility" type="text" style="width: 313px" />
                     </td>
-                </tr>            
-            </table>            
+                </tr> 
+                <tr>
+                    <td>
+                        Branch Proposal Ref:
+                    </td>
+                    <td>
+                        <input id="txtBranchRef" type="text" style="width: 313px" />
+                    </td>
+                </tr>  
+                <tr>
+                    <td>
+                        Application Date:
+                    </td>
+                    <td>
+                        <input id="txtApplicationDate" type="text" style="width: 200px" />
+                    </td>
+                </tr>      
+                <tr>
+                    <td>
+                        Branch Proposal Date:
+                    </td>
+                    <td>
+                        <input id="txtBranchProposalDate" type="text" style="width: 200px" />
+                    </td>
+                </tr>                
+            </table>  
+            
+            <br />
+            
+            <table>
+                <tr>
+                    <td>
+                        Save as:
+                    </td>
+                    <td style="padding-left:10px;">
+                        <input id="rbDraft" type="radio" name="saveStatus" checked="checked" value="0">Draft&nbsp;
+                        <input id="rbPending" type="radio" name="saveStatus" value="1">Sent to review
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="height:5px;"></td>
+                </tr>
+                <tr id="trAssignUser" style="display:none;">
+                    <td>Sent to:</td>
+                    <td>
+                        <select id="ddlAssignUser"></select>
+                    </td>
+                </tr>
+            </table> 
+            
+            <br />
+            
+            <table>
+                <tr>
+                    <td>
+                        <input name="submit" type="submit"  value="Save Proposal" class="create-credit-button fg-button ui-state-default"/>
+                    </td>
+                    <td>
+                        <div id="message"></div>
+                    </td>
+                </tr>
+            </table>        
+                      
         </div>
         <div id="tab-2"> 
             <table class="form-entry">
@@ -137,7 +214,7 @@
 
                     </td>
                     <td>
-                        <input id="btnRelationshipSummary" name="submit" type="submit"  value="Add Relationship Summary" class="fg-button ui-state-default"/>
+                        <input id="btnRelationshipSummary" name="submit" type="submit"  value="Add Relationship" class="fg-button ui-state-default"/>
                     </td>                    
                 </tr>
                       
@@ -159,42 +236,8 @@
             <h2>Tab6</h2>       
         </div>        
     </div>
-<br />    
-    <fieldset>
-        <legend>Save Type</legend>
-        <table>
-            <tr>
-                <td>
-                    Save as:
-                </td>
-                <td>
-                    <input id="rbDraft" type="radio" name="saveStatus" checked="checked" value="0">Draft&nbsp;
-                    <input id="rbPending" type="radio" name="saveStatus" value="1">Sent to review
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="height:5px;"></td>
-            </tr>
-            <tr id="trAssignUser" style="display:none;">
-                <td>Sent to:</td>
-                <td>
-                    <select id="ddlAssignUser"></select>
-                </td>
-            </tr>
-        </table>        
-    </fieldset>
 </div>
-<div>
-    <table>
-        <tr>
-            <td>
-                <input name="submit" type="submit"  value="Save Credit" class="create-credit-button fg-button ui-state-default"/>
-            </td>
-            <td>
-                <div id="message"></div>
-            </td>
-        </tr>
-    </table>    
+<div>   
 </div>
 
 <script type="text/javascript">
@@ -208,10 +251,25 @@
         $("#dpSanctionDate").datepicker();
         $("#dpExpiryDate").datepicker();
 
+        // Initialize Application date
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var year = d.getFullYear();
+        txtApplicationDate.value = day + '/' + month + '/' + year;
+        txtBranchProposalDate.value = day + '/' + month + '/' + year;
+
         // Load groups
         PopulateBranchList();
 
         BindUserList();
+
+        var creditId = getUrlVars()["creditId"]; //parseInt(getUrlVars()["creditId"], 10);
+        txtId.value = creditId;
+        if (creditId) {
+            PopulateCreditBasicInfo(creditId);
+            PopulateRelationshipSummaryList();
+        }
 
         // Status
         $('input:radio[name="saveStatus"]').change(
@@ -235,10 +293,21 @@
             var loggedInUserId = $('#loggedInUserId').html();
             var status = $('input:radio[name="saveStatus"]').val();
             var assignUserId = (status === "0") ? loggedInUserId : $("#ddlAssignUser").val();
-            var subject = $("#txtSubject").val();            
+            var subject = $("#txtSubject").val();
+            var subjectDetails = $("#txtSubjectDetails").val();
+            var borrowerName = $("#txtBorrowerName").val();
+            var applicationDate = $("#txtApplicationDate").val();
+            var branchProposalDate = $("#txtBranchProposalDate").val();
+            var proposedFacility = $("#txtProposedFacility").val();
+            var branchRef = $("#txtBranchRef").val();
             
             // Prepare the department object
-            var creditInfo = { CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: loggedInUserId, AssignUserId: assignUserId, Status: status };
+            var creditInfo = {
+                CreditInfoId: id, Subject: subject, BranchId: branchId, ClientId: clientId, CreatedUserId: loggedInUserId, AssignUserId: assignUserId, Status: status,
+                SubjectDetails: subjectDetails, BorrowerName: borrowerName,
+                ApplicationDate: applicationDate, BranchProposalDate: branchProposalDate,
+                ProposedFacility: proposedFacility, BranchRef: branchRef
+            };
             
             // Show loader
             showActionLoader(true, 'Saving Credit Information');
@@ -251,6 +320,9 @@
                 cache: false,
                 dataType: "json",
                 success: function (data) {
+
+                    // Newly created credit id
+                    $('#txtId').value = data.createdCreditInfoId;
 
                     // Hide loader
                     showActionLoader(false);
@@ -270,6 +342,119 @@
                 }
             });
         });
+
+        // Create company
+        $("#btnRelationshipSummary").click(function (e) {
+            e.preventDefault();
+
+            var key = $("#txtId").val();
+            var creditInfoId = key ? key : 0;
+
+            var natureOfFacility = $("#ddlNatureOfFacility").val();
+            var sanctionDate = '2013-12-30'; //$("#dpSanctionDate").datepicker("getDate");
+            var fundedLimit = $('#txtFundedLimit').val();
+            var nonFundedLimit = $('#txtNonFundedLimit').val();
+            var expiryDate = '2013-12-30'; //$("#dpExpiryDate").datepicker("getDate");
+            var reScheduleTime = $("#txtRescheduleTime").val();
+            var reScheduleAmount = $("#txtRescheduleAmount").val();
+            var approvalAuthority = $("#txtApprovalAuthority").val();
+
+            // Prepare the department object
+            var relationshipSummary = {
+                CreditInfoId: creditInfoId, FacilityNature: natureOfFacility, SanctionDate: sanctionDate,
+                FundedLimit: fundedLimit, NonFundedLimit: nonFundedLimit, ExpiryDate: expiryDate,
+                RescheduleTime: reScheduleAmount, RescheduleAmount: reScheduleAmount, ApprovalAuthority: approvalAuthority
+            };
+
+            // Show loader
+            showActionLoader(true, 'Saving Credit Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveRelationshipSummary", "Credit")",
+                data: relationshipSummary,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    PopulateRelationshipSummaryList();
+
+                    $("#dpSanctionDate").val('');
+                    $("#txtFundedLimit").val('');
+                    $("#txtNonFundedLimit").val('');
+                    $("#dpExpiryDate").val('');
+                    $("#txtRescheduleTime").val('');
+                    $("#txtRescheduleAmount").val('');
+                    $("#txtApprovalAuthority").val('');
+                    $("#ddlNatureOfFacility").focus();
+                    
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+        // Read a page's GET URL variables and return them as an associative array.
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        function PopulateRelationshipSummaryList() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetRelationshipSummaryList", "Credit")",
+                        data: { creditId: $("#txtId").val() },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            $('.relationshipSummaryList').html(data.html);
+                            $('#recordList').dataTable({
+                                "bPaginate": false,
+                                "bFilter": false,
+                                "bInfo": false
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            showError("Error to execute ajax call");
+                        }
+            });
+        }
+
+        function PopulateCreditBasicInfo(creditId) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetCreditBasicInfo", "Credit")",
+                data: { creditId: $("#txtId").val() },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    
+                    txtSubject.value = data.Subject;
+                    ddlBranch.value = data.BranchId;
+                    $('#ddlBranch').trigger("change");
+                    ddlClient.value = data.ClientId;
+                    txtApplicationDate.value = data.ApplicationDate;
+                    txtBranchProposalDate.value = data.BranchProposalDate;
+                    txtBorrowerName.value = data.BorrowerName;
+                    txtBranchRef.value = data.BranchRef;
+                    txtProposedFacility.value = data.ProposedFacility;
+                    txtSubjectDetails.value = data.SubjectDetails;
+                },
+                error: function (xhr, status, error) {
+                    showError("Error to execute ajax call");
+                }
+            });
+        }
 
         $('#ddlBranch').change(function () {
             

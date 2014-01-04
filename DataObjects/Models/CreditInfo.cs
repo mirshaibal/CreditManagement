@@ -21,6 +21,12 @@ namespace DataObjects.Models
         public Nullable<int> Status { get; set; }
         public string Subject { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
+        public string SubjectDetails { get; set; }
+        public string BorrowerName { get; set; }
+        public string ProposedFacility { get; set; }
+        public string BranchRef { get; set; }
+        public string ApplicationDate { get; set; }
+        public string BranchProposalDate { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual Client Client { get; set; }
         public virtual ICollection<CreditFile> CreditFiles { get; set; }

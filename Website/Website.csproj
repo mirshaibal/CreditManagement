@@ -330,6 +330,7 @@
     <Content Include="Views\Company\AddBranch.cshtml" />
     <Content Include="Views\Company\BranchList.cshtml" />
     <Content Include="Views\Credit\_CreditInfoPendingList.cshtml" />
+    <Content Include="Views\Credit\_RelationshipSummaryList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

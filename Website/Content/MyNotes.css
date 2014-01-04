@@ -705,10 +705,31 @@ html[xmlns] .clearfix {
 {
     font-weight:bold;
     background-color: yellow;
+    border-bottom: 1px solid #fff;
 }
 .draft
 {
     font-weight:bold;
     background-color: red;
     color:white;
+    border: 1px solid #fff;
+}
+input
+{
+    border: 1px solid lightgray !important;
+}
+.ui-state-default
+{
+    border: 1px solid #1A8439 !important;
+    background: #1A8439 url(images/ui-bg_gloss-wave_60_fece2f_500x100.png) 50% 50% repeat-x !important;
+    font-weight: bold !important;
+    color: #fff !important;
+}
+.ui-state-active a
+{
+    color: #fff !important;
+}
+.ui-state-default a:link
+{
+    /*color: #4c3000 !important;*/
 }
