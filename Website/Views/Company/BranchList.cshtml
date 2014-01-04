@@ -3,4 +3,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>BranchList</h2>
+<fieldset>
+        <legend>Branch List</legend>
+        <div id="branchList"></div>    
+</fieldset>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        GetBranchList();          
+    });
+
+    function GetBranchList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetBranchInfoList", "Company")",
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                $('#branchList').html(data.html);
+                $('#recordList').dataTable({
+                    "bPaginate": false,
+                    "bFilter": false,
+                    "bInfo": false
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+</script>

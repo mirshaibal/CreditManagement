@@ -41,7 +41,7 @@ namespace Website.Controllers
 
             if (isNew)
             {
-                _dbContext.Branches.Add(branchToSave);                
+                _dbContext.Branches.Add(branchToSave);
             }
             else
             {
@@ -74,6 +74,26 @@ namespace Website.Controllers
                 isSuccess = isSuccess,
                 message = message,
                 html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetBranchInfoList()
+        {
+            var user = Session["User"] as User;
+
+            if (user == null)
+            {
+                Response.Redirect("/Hope/Index");
+            }
+
+            var list = new List<Branch>();
+
+            list = (from branch in _dbContext.Branches                    
+                    select branch).ToList();
+
+            return Json(new
+            {
+                html = this.RenderPartialView("_BranchInfoList", list)
             }, JsonRequestBehavior.AllowGet);
         }
 
