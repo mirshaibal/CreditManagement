@@ -15,13 +15,13 @@ namespace DataObjects.Models
         public int BranchId { get; set; }
         public string Name { get; set; }
         public string Address { get;set;}
-        public decimal Deposit { get; set; }
-        public decimal NLCostDeposit { get; set; }
-        public decimal Advance { get; set; }
-        public decimal ClassifiedAmount { get; set; }
-        public decimal WOL { get; set; }
-        public decimal profit { get; set; }
-        public int Manpower { get; set; }
+        public Nullable<System.Decimal> Deposit { get; set; }
+        public Nullable<System.Decimal> NLCostDeposit { get; set; }
+        public Nullable<System.Decimal> Advance { get; set; }
+        public Nullable<System.Decimal> ClassifiedAmount { get; set; }
+        public Nullable<System.Decimal> WOL { get; set; }
+        public Nullable<System.Decimal> profit { get; set; }
+        public Nullable<System.Int32> Manpower { get; set; }
         public Nullable<System.DateTime> ActionTime { get; set; }
         public virtual ICollection<Client> Clients { get; set; }
         public virtual ICollection<CreditInfo> CreditInfoes { get; set; }
