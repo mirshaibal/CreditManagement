@@ -12,11 +12,20 @@ namespace DataObjects.Models
 
         public int ClientId { get; set; }
         public int BranchId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+        public string Name { get; set; }       
+        public string Address { get; set; }
+        public string CorporateAddress { get; set; }
+        public string FactoryAddress { get; set; }
+        public string BusinessNature { get; set; }
+        public string ConstitutionNature { get; set; }
+        public Nullable<System.DateTime> IncorporationDate { get; set; }        
+        public string Products { get; set; }
+        public string AuthorizedCapital { get; set; }
+        public string PaidupCapital { get; set; }  
         public Nullable<System.DateTime> ActionTime { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<CreditInfo> CreditInfoes { get; set; }
+
+        
     }
 }
