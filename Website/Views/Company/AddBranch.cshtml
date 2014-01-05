@@ -120,7 +120,7 @@
             var manpower = $("#txtManpower").val();
 
             // Prepare the department object
-            var brancInfo = {
+            var branchInfo = {
                 BranchId: id, Name: name, Address: address, NLCostDeposit: nlDeposit, Advance: advance,
                 ClassifiedAmount: classifiedAmount, WOL: wol,
                 profit: profit, Manpower: manpower
@@ -133,7 +133,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("SaveBranchInfo", "Company")",
-                data: brancInfo,
+                data: branchInfo,
                 cache: false,
                 dataType: "json",
                 success: function (data) {
