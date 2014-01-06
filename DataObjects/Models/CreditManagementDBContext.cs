@@ -24,6 +24,8 @@ namespace DataObjects.Models
         public DbSet<RelationshipSummary> RelationshipSummaries { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ClientAdministration> ClientAdministrations { get; set; }
+        public DbSet<ClientSisterConcern > ClientSisterConcerns { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,6 +37,8 @@ namespace DataObjects.Models
             modelBuilder.Configurations.Add(new RelationshipSummaryMap());
             modelBuilder.Configurations.Add(new RoleMap());
             modelBuilder.Configurations.Add(new UserMap());
+            modelBuilder.Configurations.Add(new ClientAdministrationMap());
+            modelBuilder.Configurations.Add(new ClientSisterConcernMap());
         }
     }
 }

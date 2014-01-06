@@ -8,6 +8,7 @@ namespace DataObjects.Models
         public Client()
         {
             this.CreditInfoes = new List<CreditInfo>();
+            this.ClientAdministrations = new List<ClientAdministration>();
         }
 
         public int ClientId { get; set; }
@@ -25,7 +26,8 @@ namespace DataObjects.Models
         public Nullable<System.DateTime> ActionTime { get; set; }
         public virtual Branch Branch { get; set; }
         public virtual ICollection<CreditInfo> CreditInfoes { get; set; }
-
+        public virtual ICollection<ClientAdministration> ClientAdministrations { get; set; }
+        public virtual ICollection<ClientSisterConcern> ClientSisterConcerns { get; set; }
         
     }
 }
