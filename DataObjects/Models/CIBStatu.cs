@@ -13,7 +13,7 @@ namespace DataObjects.Models
         public Nullable<int> NOF { get; set; }
         public Nullable<System.DateTime> ReportDate { get; set; }
         public Nullable<int> CreditInfoId { get; set; }
-        //public virtual CIBStatu CIBStatus1 { get; set; }
-        //public virtual CIBStatu CIBStatu1 { get; set; }
+        public virtual CIBStatu CIBStatus1 { get; set; }
+        public virtual CIBStatu CIBStatu1 { get; set; }
     }
 }

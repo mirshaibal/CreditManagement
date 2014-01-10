@@ -48,6 +48,8 @@
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Models\CIBStatu.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ClientAdministration.cs" />
+    <Compile Include="Models\ClientSisterConcern.cs" />
     <Compile Include="Models\CreditFile.cs" />
     <Compile Include="Models\CreditFlow.cs" />
     <Compile Include="Models\CreditInfo.cs" />
@@ -55,7 +57,9 @@
     <Compile Include="Models\FacilityDetail.cs" />
     <Compile Include="Models\Mapping\BranchMap.cs" />
     <Compile Include="Models\Mapping\CIBStatuMap.cs" />
+    <Compile Include="Models\Mapping\ClientAdministrationMap.cs" />
     <Compile Include="Models\Mapping\ClientMap.cs" />
+    <Compile Include="Models\Mapping\ClientSisterConcernMap.cs" />
     <Compile Include="Models\Mapping\CreditFileMap.cs" />
     <Compile Include="Models\Mapping\CreditFlowMap.cs" />
     <Compile Include="Models\Mapping\CreditInfoMap.cs" />

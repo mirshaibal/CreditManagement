@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DataObjects.Models.Branch>
+@using Helpers
+<table id="recordList">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Address</th>
+            <th>Deposit</th>
+            <th>N & L Cost Deposit</th>
+            <th>Advance</th>
+            <th>Classified Amount</th>
+            <th>WOL</th>
+            <th>Profit</th>
+            <th>Manpower</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@MvcHtmlString.Create(@item.Name)</td>
+                <td>@MvcHtmlString.Create(@item.Address)</td>
+                <td>@MvcHtmlString.Create(@item.Deposit.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.NLCostDeposit.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.Advance.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.ClassifiedAmount.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.WOL.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.profit.ToString())</td>
+                <td>@MvcHtmlString.Create(@item.Manpower.ToString())</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

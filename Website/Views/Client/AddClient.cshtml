@@ -206,6 +206,7 @@
                 <tr>
                     <td>
                         <input name="submit" type="submit" value="Save" class="create-client-admin-info-button fg-button ui-state-default" />
+                        <input name="submit" type="submit" value="Save" id="create-client-admin-info-button" class="fg-button ui-state-default" />
                     </td>
                     <td>
                         <div id="client-admin-info-message"></div>
@@ -268,6 +269,7 @@
                 <tr>
                     <td>
                         <input name="submit" type="submit" value="Save" class="create-client-sister-concern-button fg-button ui-state-default" />
+                        <input name="submit" type="submit" value="Save" id="create-client-sister-concern-button" class="fg-button ui-state-default" />
                     </td>
                     <td>
                         <div id="client-sister-concern-message"></div>
@@ -289,14 +291,14 @@
         // Initialize date picker
         $("#dpClientIncorporationDate").datepicker();
 
-        // Create company
+        // Create client
         $("#create-client-button").click(function (e) {
             e.preventDefault();
 
             var key = $("#txtClientId").val();
             var id = key ? key : 0;
-
             var name = $("#txtClientName").val();
+            var name = $("#txtAdminName").val();
             var address = $("#txtClientAddress").val();
             var authorizedCapital = $("#txtClientAuthorizedCapital").val();
             var corporateAddress = $("#txtClientCorporateAddress").val();
@@ -353,6 +355,114 @@
                 }
             });
         });
+
+        // Create Client admin
+        $("#create-client-admin-info-button").click(function (e) {
+            e.preventDefault();         
+            var name = $("#txtAdminName").val();
+            var fatherName = $("#txtAdminFatherName").val();
+            var motherName = $("#txtAdminMotherName").val();
+            var address = $("#txtAdminAddress").val();
+            var age = $("#txtAdminAge").val();
+            var education = $("#txtAdminEducation").val();
+            var backgroundDetails = $("#txtAdminBackgroundDetails").val();
+            var businessExperience = $("#txtAdminBusinessExperience").val();
+            var position = $("#txtAdminPosition").val();            
+
+            // Prepare the department object
+            var clientAdminInfo = {
+                AdminId: 0, Name: name, Address: address, FatherName: fatherName,
+                MotherName: motherName, Age: age,
+                Education: education, BackgroundDetails: backgroundDetails, BusinessExperience: businessExperience, Position: position,
+                ClientId: 1
+            };
+
+            // Show loader
+            showActionLoader(true, 'Saving Client Administration Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveClientAdminInfo", "Client")",
+                data: clientAdminInfo,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Newly created credit id
+                    //$('#txtClientId').value = data.ClientId;
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    // Clear data
+                    clearClientAdminData();
+
+                    // Show message
+                    $('#client-admin-info-message').html('Client Admin info has been created successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#client-admin-info-message').html('').removeClass('success-message').hide();
+                    }, 5000);
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+
+        // Create Client sister concern
+        $("#create-client-sister-concern-button").click(function (e) {
+            e.preventDefault();          
+
+            var name = $("#txtSisterName").val();            
+            var address = $("#txtSisterAddress").val();
+            var holdingShare = $("#txtSisterHoldingShare").val();
+            var nationalId = $("#txtSisterNationalID").val();
+            var percentage = $("#txtSisterPercentage").val();
+            var pnw = $("#txtSisterPNW").val();            
+
+            // Prepare the department object
+            var clientSisterConcernInfo = {
+                SisterConcernId: 0, Name: name, Address: address, NationalId: nationalId,
+                HoldingShares: holdingShare, Percentage: percentage, PNW: pnw, 
+                ClientId: 1
+            };
+
+            // Show loader
+            showActionLoader(true, 'Saving Client Sister Concern Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveClientSisterConcernInfo", "Client")",
+                data: clientSisterConcernInfo,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Newly created credit id
+                    //$('#txtClientId').value = data.ClientId;
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    // Clear data
+                    clearClientSisterConcernData();
+
+                    // Show message
+                    $('#client-sister-concern-message').html('Client Admin info has been created successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#client-sister-concern-message').html('').removeClass('success-message').hide();
+                    }, 5000);
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
     });
 
     function clearClientData() {
@@ -366,6 +476,27 @@
         dpClientIncorporationDate.valu = "";
         $(':checkbox').prop('checked', false);
         $('#dpClientIncorporationDate').val("");
+    }
+
+    function clearClientAdminData() {
+        txtAdminName.value = "";
+        txtAdminFatherName.value = "";
+        txtAdminMotherName.value = "";
+        txtAdminAddress.value = "";
+        txtAdminAge.value = "";
+        txtAdminEducation.value = "";
+        txtAdminBackgroundDetails.value = "";
+        txtAdminBusinessExperience.value = "";
+        txtAdminPosition.value = "";
+    }
+
+    function clearClientSisterConcernData() {
+        txtSisterAddress.value = "";
+        txtSisterHoldingShare.value = "";
+        txtSisterName.value = "";
+        txtSisterNationalID.value = "";
+        txtSisterPercentage.value = "";
+        txtSisterPNW.value = "";       
     }
 
 </script>

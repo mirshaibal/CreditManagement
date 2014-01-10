@@ -7,6 +7,8 @@ namespace DataObjects.Models
     {
         public Client()
         {
+            this.ClientAdministrations = new List<ClientAdministration>();
+            this.ClientSisterConcerns = new List<ClientSisterConcern>();
             this.CreditInfoes = new List<CreditInfo>();
         }
 
@@ -26,6 +28,8 @@ namespace DataObjects.Models
         public string BusinessNature { get; set; }
         public string ConstitutionNature { get; set; }
         public virtual Branch Branch { get; set; }
+        public virtual ICollection<ClientAdministration> ClientAdministrations { get; set; }
+        public virtual ICollection<ClientSisterConcern> ClientSisterConcerns { get; set; }
         public virtual ICollection<CreditInfo> CreditInfoes { get; set; }
     }
 }

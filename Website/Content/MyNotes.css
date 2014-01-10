@@ -708,9 +708,12 @@ html[xmlns] .clearfix {
 }
 .draft
 {
-    font-weight:bold;
+    font-weight: bold;
     background-color: red;
-    color:white;
+    color: white;
+}
+ HEAD
+ {
     border: 1px solid #fff;
 }
 input
@@ -732,6 +735,7 @@ input
 {
     /*color: #4c3000 !important;*/
 }
+
 td
 {
     vertical-align: top;

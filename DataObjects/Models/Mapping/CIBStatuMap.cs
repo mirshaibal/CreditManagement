@@ -22,9 +22,9 @@ namespace DataObjects.Models.Mapping
             this.Property(t => t.ReportDate).HasColumnName("ReportDate");
             this.Property(t => t.CreditInfoId).HasColumnName("CreditInfoId");
 
-            //// Relationships
-            //this.HasRequired(t => t.CIBStatu1)
-            //    .WithOptional(t => t.CIBStatus1);
+            // Relationships
+            this.HasRequired(t => t.CIBStatu1)
+                .WithOptional(t => t.CIBStatus1);
 
         }
     }

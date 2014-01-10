@@ -19,6 +19,8 @@ namespace DataObjects.Models
         public DbSet<Branch> Branches { get; set; }
         public DbSet<CIBStatu> CIBStatus { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientAdministration> ClientAdministrations { get; set; }
+        public DbSet<ClientSisterConcern> ClientSisterConcerns { get; set; }
         public DbSet<CreditFile> CreditFiles { get; set; }
         public DbSet<CreditFlow> CreditFlows { get; set; }
         public DbSet<CreditInfo> CreditInfoes { get; set; }
@@ -32,6 +34,8 @@ namespace DataObjects.Models
             modelBuilder.Configurations.Add(new BranchMap());
             modelBuilder.Configurations.Add(new CIBStatuMap());
             modelBuilder.Configurations.Add(new ClientMap());
+            modelBuilder.Configurations.Add(new ClientAdministrationMap());
+            modelBuilder.Configurations.Add(new ClientSisterConcernMap());
             modelBuilder.Configurations.Add(new CreditFileMap());
             modelBuilder.Configurations.Add(new CreditFlowMap());
             modelBuilder.Configurations.Add(new CreditInfoMap());

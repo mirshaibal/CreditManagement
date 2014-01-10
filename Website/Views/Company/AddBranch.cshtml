@@ -3,86 +3,174 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table>
-    <tr>
-        <td>
-            <label>Name</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Address</label>
-        </td>
-        <td>
-            <textarea cols="50" rows="5"></textarea>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Deposit</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>N & L Cost Deposit</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Advance</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Classified Amount</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>WOL</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Profit</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label>Manpower</label>
-        </td>
-        <td>
-            <input type="text" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            
-        </td>
-        <td>
-            <button>Save</button>
-            <button>Cancel</button>
-        </td>
-    </tr>
-</table>
+<div class="indicator"></div>
+<div style="display: none;" id="loggedInUserId">@ViewBag.LoggedInUserId</div>
+
+<div class="panel">
+    <table class="form-entry">
+        <tr style="display: none;">
+            <td>Id:</td>
+            <td>
+                <input id="txtId" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Name</label>
+            </td>
+            <td>
+                <input id="txtName" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Address</label>
+            </td>
+            <td>
+                <textarea id="txtAddress" cols="50" rows="5"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Deposit</label>
+            </td>
+            <td>
+                <input id="txtDeposit" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>N & L Cost Deposit</label>
+            </td>
+            <td>
+                <input id="txtNLCostDeposit" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Advance</label>
+            </td>
+            <td>
+                <input id="txtAdvance" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Classified Amount</label>
+            </td>
+            <td>
+                <input id="txtClassifiedAmount" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>WOL</label>
+            </td>
+            <td>
+                <input id="txtWOL" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Profit</label>
+            </td>
+            <td>
+                <input id="txtProfit" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Manpower</label>
+            </td>
+            <td>
+                <input id="txtManpower" type="text" />
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <table>
+        <tr>
+            <td>
+                <input name="submit" type="submit" value="Save Branch" class="create-branch-button fg-button ui-state-default" />
+            </td>
+            <td>
+                <div id="message"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Create company
+        $(".create-branch-button").click(function (e) {
+            e.preventDefault();
+
+            var key = $("#txtId").val();
+            var id = key ? key : 0;
+            var name = $("#txtName").val();
+            var address = $("#txtAddress").val();
+            var deposit = $("#txtDeposit").val();
+            var nlDeposit = $("#txtNLCostDeposit").val();
+            var advance = $("#txtAdvance").val();
+            var classifiedAmount = $("#txtClassifiedAmount").val();
+            var wol = $("#txtWOL").val();
+            var profit = $("#txtProfit").val();
+            var manpower = $("#txtManpower").val();
+
+            // Prepare the department object
+            var branchInfo = {
+                BranchId: id, Name: name, Address: address, NLCostDeposit: nlDeposit, Advance: advance,
+                ClassifiedAmount: classifiedAmount, WOL: wol,
+                profit: profit, Manpower: manpower
+            };
+
+            // Show loader
+            showActionLoader(true, 'Saving Branch Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveBranchInfo", "Company")",
+                data: branchInfo,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Newly created credit id
+                    $('#txtId').value = data.createdCreditInfoId;
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    // Clear data
+                    clearData();
+
+                    // Show message
+                    $('#message').html('Branch info has been created successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#message').html('').removeClass('success-message').hide();
+                    }, 5000);
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+    });
+
+    function clearData() {
+        txtName.value = "";
+        txtAddress.value = "";
+        txtDeposit.value =
+        txtNLCostDeposit.value = "";
+        txtAdvance.value = "";
+        txtClassifiedAmount.value = "";
+        txtWOL.value = "";
+        txtProfit.value = "";
+        txtManpower.value = "";
+    }
+
+</script>

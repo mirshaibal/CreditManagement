@@ -68,5 +68,82 @@ namespace Website.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult SaveClientAdminInfo(ClientAdministration clientAdminToSave)
+        {
+            var isSuccess = true;
+            var message = string.Empty;
+            var isNew = clientAdminToSave.AdminId == 0 ? true : false;
+            ClientAdministration createdClientAdmin = new ClientAdministration();
+
+            clientAdminToSave.ActionTime = DateTime.Now;
+
+            if (isNew)
+            {
+                _dbContext.ClientAdministrations.Add(clientAdminToSave);
+            }
+            else
+            {
+                //Update
+            }
+
+            try
+            {
+                _dbContext.SaveChanges();
+                //TODO: get the saved one
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message;
+            }
+
+            return Json(new
+            {
+                createdAdminId = createdClientAdmin.AdminId,
+                isSuccess = isSuccess,
+                message = message,
+                html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult SaveClientSisterConcernInfo(ClientSisterConcern clientSisterConcernToSave)
+        {
+            var isSuccess = true;
+            var message = string.Empty;
+            var isNew = clientSisterConcernToSave.SisterConcernId == 0 ? true : false;
+            ClientSisterConcern createdClienSisterConcern = new ClientSisterConcern();
+
+            clientSisterConcernToSave.ActionTime = DateTime.Now;
+
+            if (isNew)
+            {
+                _dbContext.ClientSisterConcerns.Add(clientSisterConcernToSave);
+            }
+            else
+            {
+                //Update
+            }
+
+            try
+            {
+                _dbContext.SaveChanges();
+                //TODO: get the saved one
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message;
+            }
+
+            return Json(new
+            {
+                createdClientSisterConcernId = createdClienSisterConcern.SisterConcernId,
+                isSuccess = isSuccess,
+                message = message,
+                html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
