@@ -17,10 +17,12 @@ namespace DataObjects.Models
         }
 
         public DbSet<Branch> Branches { get; set; }
+        public DbSet<CIBStatu> CIBStatus { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<CreditFile> CreditFiles { get; set; }
         public DbSet<CreditFlow> CreditFlows { get; set; }
         public DbSet<CreditInfo> CreditInfoes { get; set; }
+        public DbSet<FacilityDetail> FacilityDetails { get; set; }
         public DbSet<RelationshipSummary> RelationshipSummaries { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -28,10 +30,12 @@ namespace DataObjects.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new BranchMap());
+            modelBuilder.Configurations.Add(new CIBStatuMap());
             modelBuilder.Configurations.Add(new ClientMap());
             modelBuilder.Configurations.Add(new CreditFileMap());
             modelBuilder.Configurations.Add(new CreditFlowMap());
             modelBuilder.Configurations.Add(new CreditInfoMap());
+            modelBuilder.Configurations.Add(new FacilityDetailMap());
             modelBuilder.Configurations.Add(new RelationshipSummaryMap());
             modelBuilder.Configurations.Add(new RoleMap());
             modelBuilder.Configurations.Add(new UserMap());

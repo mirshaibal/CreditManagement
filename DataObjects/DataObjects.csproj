@@ -46,16 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\CIBStatu.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\CreditFile.cs" />
     <Compile Include="Models\CreditFlow.cs" />
     <Compile Include="Models\CreditInfo.cs" />
     <Compile Include="Models\CreditManagementDBContext.cs" />
+    <Compile Include="Models\FacilityDetail.cs" />
     <Compile Include="Models\Mapping\BranchMap.cs" />
+    <Compile Include="Models\Mapping\CIBStatuMap.cs" />
     <Compile Include="Models\Mapping\ClientMap.cs" />
     <Compile Include="Models\Mapping\CreditFileMap.cs" />
     <Compile Include="Models\Mapping\CreditFlowMap.cs" />
     <Compile Include="Models\Mapping\CreditInfoMap.cs" />
+    <Compile Include="Models\Mapping\FacilityDetailMap.cs" />
     <Compile Include="Models\Mapping\RelationshipSummaryMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
     <Compile Include="Models\Mapping\UserMap.cs" />

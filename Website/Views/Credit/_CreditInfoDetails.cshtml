@@ -1,8 +1,28 @@
 ﻿@model DataObjects.Models.CreditInfo
 @using Helpers
 
+<div style="padding:5px; border:1px solid gray;margin-top:20px;">
+    <table class="form-entry">
+        <tr>
+            <td>
+                <label style="font-size:18px; font-weight:bold; color:green;">Subject:</label>
+            </td>
+            <td style="padding-left:10px;">
+                <label style="font-size:16px;">@Model.Subject</label>
+            </td>
+        </tr>
+        <tr>
+            <td>             
+            </td>
+            <td style="padding-left:10px;">
+                <label style="font-size:14px;">@Model.SubjectDetails</label>
+            </td>
+        </tr>
+    </table>
+</div>
+<br />
 <fieldset>
-        <legend>Credit Information</legend>
+        <legend>Proposal Summary</legend>
         <table class="form-entry">
         <tr style="display:none;">
             <td>
@@ -11,15 +31,7 @@
             <td>
                 <label id="lblCreditInfoId">@Model.CreditInfoId</label>
             </td>
-        </tr>
-        <tr>
-            <td>
-                Subject:
-            </td>
-            <td>
-                <label id="lblSubject">@Model.Subject</label>
-            </td>
-        </tr>
+        </tr>        
         <tr>
             <td>
                 Branch:
@@ -27,17 +39,127 @@
             <td>
                 <label id="lblBranch">@Model.Branch.Name</label>
             </td>
-        </tr>
-        <tr>
+        </tr>        
+            <tr>
             <td>
-                Client:
+                Borrower Name:
             </td>
             <td>
-                <label id="lblClient">@Model.Client.Name</label>
+                <label>@Model.BorrowerName</label>
+            </td>
+        </tr>
+            <tr>
+            <td>
+                Proposed Facility:
+            </td>
+            <td>
+                <label>@Model.ProposedFacility</label>
+            </td>
+        </tr>
+            <tr>
+            <td>
+                Branch Proposal Ref:
+            </td>
+            <td>
+                <label>@Model.BranchRef</label>
+            </td>
+        </tr>
+            <tr>
+            <td>
+                Application Date:
+            </td>
+            <td>
+                <label>@Model.ApplicationDate</label>
+            </td>
+        </tr>
+            <tr>
+            <td>
+                Branch Proposal Date:
+            </td>
+            <td>
+                <label>@Model.BranchProposalDate</label>
             </td>
         </tr>
     </table>
 </fieldset>
+
+<fieldset>
+        <legend>Particulars of Client</legend>
+        <table class="form-entry">
+            <tr>
+                <td>
+                    Name of Client:
+                </td>
+                <td>
+                    <label >@Model.Client.Name</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Register Address:
+                </td>
+                <td>
+                    <label >@Model.Client.Address</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Corporate Address:
+                </td>
+                <td>
+                    <label >@Model.Client.CorporateAddress</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Factory Address:
+                </td>
+                <td>
+                    <label >@Model.Client.FactoryAddress</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Nature of Business:
+                </td>
+                <td>
+                    <label >@Model.Client.BusinessNature</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date of Incorporation:
+                </td>
+                <td>
+                    <label >@Model.Client.IncorporationDate</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Products:
+                </td>
+                <td>
+                    <label >@Model.Client.Products</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Authorized Capital:
+                </td>
+                <td>
+                    <label >@Model.Client.AuthorizedCapital</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Paid up Capital:
+                </td>
+                <td>
+                    <label >@Model.Client.PaidupCapital</label>
+                </td>
+            </tr>
+        </table>
+    </fieldset> 
 
 <fieldset>
         <legend>Attach File</legend>  

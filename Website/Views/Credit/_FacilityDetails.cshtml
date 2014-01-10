@@ -1,0 +1,62 @@
+﻿@model IEnumerable<DataObjects.Models.FacilityDetail>
+@using Helpers
+<table id="facilityRecordList">
+    <thead>
+        <tr>
+            <th>Nature Of Facility</th>
+            <th>EL Funded</th>
+            <th>EL Non Funded</th>
+            <th>POS Funded</th>
+            <th>POS Non Funded</th>
+            <th>Validity</th>
+            <th>LY Turn Over</th>
+            <th>EOL</th>
+            <th>Overdue Installment(s) NO.</th>
+            <th>Overdue Installment(s) Amount</th>
+            <th>CL Status</th>
+            <th>APF Funded</th>
+            <th>APF Non Funded</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @*@{
+                        var nofId = Convert.ToInt32(item.NatureOfFacility - 1);
+                        var nofList = ViewBag.NatureOfFacility.Data;
+                        var nofName = nofList[nofId].Value;
+                        @nofName
+                    }*@
+                </td>
+                <td>@item.ELFunded.ToString()</td>
+                <td>@item.ELNonFunded.ToString()</td>
+                <td>@item.OSFunded.ToString()</td>
+                <td>@item.OSNonFunded.ToString()</td>
+                <td>
+                    @{
+                        if (item.Validity != null)
+                        {
+                            var validityDate = Convert.ToDateTime(item.Validity);
+                            @validityDate.ToString("dd-mm-yyyy")                     
+                        }
+                    }
+                </td>
+                <td>@item.LYTurnOver</td>
+                <td>@item.EOL.ToString()</td>
+                <td>@item.OverdueInstNo</td>
+                <td>@item.OverdueInstAmount.ToString()</td>
+                <td>@item.CLStatus</td>
+                <td>@item.APFFunded.ToString()</td>
+                <td>@item.APFNonFunded.ToString()</td>
+            </tr>            
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Total:</th>
+            <th colspan="12"></th>
+        </tr>
+    </tfoot>
+</table>

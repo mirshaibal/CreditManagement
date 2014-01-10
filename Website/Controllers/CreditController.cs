@@ -40,6 +40,13 @@ namespace Website.Controllers
 
         public ActionResult CreditList()
         {
+            var user = Session["User"] as User;
+
+            if (user == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+
             //Show the loggedin user name
             ViewBag.LoggedInUserName = (Session["User"] as User).Name;
 
@@ -68,12 +75,6 @@ namespace Website.Controllers
             {
                 _dbContext.CreditInfoes.Add(creditInfo);
                 int loggedInUserId = (Session["User"] as User).UserId;
-
-                // Relationship summary
-                RelationshipSummary rs = new RelationshipSummary();
-                rs.CreditInfoId = creditInfo.CreditInfoId;
-                //rs.FacilityNature = creditInfo
-
 
                 // Credit flow
                 if (creditInfo.Status > 0)
@@ -104,12 +105,15 @@ namespace Website.Controllers
                                   orderby ci.CreateTime descending
                                   select ci).FirstOrDefault();
 
+                ViewBag.ProposalId = createdCreditInfo.CreditInfoId;
             }
             catch (Exception ex)
             {
                 isSuccess = false;
                 message = ex.Message;
             }
+
+            //Response.Redirect("/Credit/AddCredit?CreditId=" + createdCreditInfo.CreditInfoId);
 
             return Json(new
             {
@@ -121,7 +125,7 @@ namespace Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveCreditFlow(CreditFlow creditFlow)
+        public JsonResult SaveCreditFlow(CreditFlow creditFlow, int status)
         {
             var isSuccess = true;
             var message = string.Empty;
@@ -131,6 +135,13 @@ namespace Website.Controllers
             creditFlow.AssignFromUserId = loggedInUserId;
             creditFlow.ActionTime = DateTime.Now;
             creditFlow.IsLatestComment = true;
+
+            // Change the statis
+            //if (status == 1)
+            //{
+                CreditInfo ci = (from c in _dbContext.CreditInfoes where c.CreditInfoId == creditFlow.CreditInfoId select c).FirstOrDefault();
+                ci.Status = status;
+            //}
             
             try
             {
@@ -277,7 +288,7 @@ namespace Website.Controllers
 
             if (user == null)
             {
-                Response.Redirect("/Hope/Index");
+                Response.Redirect("/Home/Index");
             }
 
             var list = new List<CreditInfo>();
@@ -396,5 +407,136 @@ namespace Website.Controllers
         {
             return null;
         }
+
+        /****** Start: Facility Details Actions ******/
+        public JsonResult GetNatureOfFacilities()
+        {
+            var natureOfFacilities = new Dictionary<int, string>
+            {
+                {1, "Term Loan"},
+                {2, "CC (Hypo)"},
+                {3, "SOD(Gen)"},
+                {4, "SOD(FO)"},
+                {5, "SOD(WO)"},
+                {6, "Revolving L/C, cash, Deferred, BB, EDF"},
+                {7, "ABP"},
+                {8, "PAD"},
+                {9, "EDF"},
+                {10, "LTR (subsequent)"},
+                {11, "Case to Case LC"},
+                {12, "LTR"},
+                {13, "B/G"}
+            };
+
+            return Json(natureOfFacilities.ToList());
+        }
+
+        [HttpPost]
+        public JsonResult SaveFacilityDetail(FacilityDetail facilityDetail)
+        {
+            var isSuccess = true;
+            var message = string.Empty;
+            var isNew = true;
+            facilityDetail.CreateTime = DateTime.Now;
+
+            if (isNew)
+            {
+                //facilityDetail.FacilityDetailId = ((int)TempData["TotalFacilityDetailRecords"]) + 1;
+                _dbContext.FacilityDetails.Add(facilityDetail);
+            }
+            else
+            {
+                //TODO
+                //FacilityDetail facilityDetailReturn = GetFacilityDetail(facilityDetail.FacilityDetailId).Data as FacilityDetail;
+                //facilityDetailReturn.NatureOfFacility = facilityDetail.NatureOfFacility;
+                //facilityDetailReturn.EOL = facilityDetail.EOL;
+                //TODO
+            }
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message;
+            }
+
+            return Json(new
+            {
+                isSuccess = isSuccess,
+                message = message,
+                html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult GetFacilityDetailList(int creditInfoId)
+        {
+            var facilityDetailList = (from c in _dbContext.FacilityDetails where c.CreditInfoId == creditInfoId select c).ToList();
+            TempData["TotalFacilityDetailRecords"] = facilityDetailList.Count;
+            ViewBag.NatureOfFacility = GetNatureOfFacilities();
+
+            return Json(new
+            {
+                html = this.RenderPartialView("_FacilityDetails", facilityDetailList)
+            }, JsonRequestBehavior.AllowGet);
+        }
+        /****** End: Facility Details Actions ******/
+
+        /*Start: CIB Status*/
+        [HttpPost]
+        public JsonResult SaveCIBStatus(CIBStatu cibStatu)
+        {
+            var isSuccess = true;
+            var message = string.Empty;
+            var isNew = cibStatu.CIBStatusId == 0;
+            cibStatu.ReportDate = DateTime.Now;
+
+            if (isNew)
+            {
+                //cibStatu.CIBStatusId = ((int)TempData["TotalCIBStatusRecords"]) + 1;
+                _dbContext.CIBStatus.Add(cibStatu);
+            }
+            else
+            {
+                //TODO
+                //FacilityDetail facilityDetailReturn = GetFacilityDetail(facilityDetail.FacilityDetailId).Data as FacilityDetail;
+                //facilityDetailReturn.NatureOfFacility = facilityDetail.NatureOfFacility;
+                //facilityDetailReturn.EOL = facilityDetail.EOL;
+                //TODO
+            }
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message;
+            }
+
+            return Json(new
+            {
+                isSuccess = isSuccess,
+                message = message,
+                html = ""
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult GetCIBStatusList()
+        {
+            var cibStatusList = (from c in _dbContext.CIBStatus select c).ToList();
+            TempData["TotalCIBStatusRecords"] = cibStatusList.Count;
+
+            return Json(new
+            {
+                html = this.RenderPartialView("_CIBStatus", cibStatusList)
+            }, JsonRequestBehavior.AllowGet);
+        }
+        /*End: CIB Status*/
     }
 }

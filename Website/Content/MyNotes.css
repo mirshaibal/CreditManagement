@@ -665,13 +665,12 @@ html[xmlns] .clearfix {
 .login-panel
 {
     padding: 10px;
-    border:2px solid;
-    border-radius:5px;
-
-    background-position: center; 
-    border: 2px solid #c8d9e9;
-    background-image: url('/Images/loginbg.jpg'); 
-    background-repeat: no-repeat;
+    border: 2px solid;
+    border-radius: 5px;
+    background-position: center;
+    border: 2px solid #c8d9e9; /*background-image: url('/Images/loginbg.jpg'); 
+    background-repeat: no-repeat;*/
+    background-color: #99CCFF;
 }
 
 #logout
@@ -712,7 +711,6 @@ html[xmlns] .clearfix {
     font-weight:bold;
     background-color: red;
     color:white;
-<<<<<<< HEAD
     border: 1px solid #fff;
 }
 input
@@ -734,12 +732,54 @@ input
 {
     /*color: #4c3000 !important;*/
 }
-=======
-}
-
 td
 {
     vertical-align: top;
     text-align:left;
 }
->>>>>>> 6a7fa63dd081d63a282c19a80a146c46f0ed4d71
+
+/*Facility details*/
+.facilityEntry input {
+	width: 60px!important;
+}
+
+.facilityEntry th {
+	text-align: left;
+	width: 50px!important;
+	white-space: pre-wrap;
+	font-size: 10px!important;
+}
+
+.facility-record-list {
+	margin-bottom: 20px;
+}
+
+.facility-record-list th {
+	font-size: 11px!important;
+}
+/*End of Facility details*/
+
+/* CIB Status */
+
+.cibStatusEntry input {
+	width: 60px!important;
+}
+
+.cibStatusEntry th {
+	text-align: left;
+	width: 50px!important;
+	white-space: pre-wrap;
+	font-size: 10px!important;
+}
+
+.cibstatus-record-list {
+	margin-bottom: 20px;
+}
+
+.cibstatus-record-list th {
+	font-size: 11px!important;
+}
+
+#cibStatusRecordList tfoot th {
+	text-align: left;
+}

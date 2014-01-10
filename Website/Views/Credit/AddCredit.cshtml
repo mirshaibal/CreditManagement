@@ -224,10 +224,82 @@
             <div style="clear:both;"></div>
         </div>
         <div id="tab-3"> 
-            <h2>Tab3</h2>       
+                        <table class="form-entry">
+                <tr>
+                    <td>
+                        Nature of Facility:
+                    </td>
+                    <td>
+                        <select id="ddlFacility">
+                            <option value="0">Select Nature of Facility</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%;" class="facilityEntry">
+                    <tr>
+                        <th>EL Funded</th>
+                        <th>EL Non Funded</th>
+                        <th>POS Funded</th>
+                        <th>POS Non Funded</th>
+                        <th>Validity</th>
+                        <th>EOL</th>
+                        <th>LY Turn Over</th>
+                        <th>Overdue Installment(s) NO.</th>
+                        <th>Overdue Installment(s) Amount</th>
+                        <th>CL Status</th>
+                        <th>APF Funded</th>
+                        <th>APF Non Funded</th>
+                    </tr>
+                    <tr>
+                        <td><input id="txtELFunded" type="text" /></td>
+                        <td><input id="txtELNonFunded" type="text" /></td>
+                        <td><input id="txtPOSFunded" type="text" /></td>
+                        <td><input id="txtPOSNonFunded" type="text" /></td>
+                        <td><input id="txtValidity" type="text" /></td>
+                        <td><input id="txtEOL" type="text" /></td>
+                        <td><input id="txtLYTurnOver" type="text" /></td>
+                        <td><input id="txtODInstNO" type="text" /></td>
+                        <td><input id="txtODInstAmout" type="text" /></td>
+                        <td><input id="txtCLStatus" type="text" /></td>
+                        <td><input id="txtAPFFunded" type="text" /></td>
+                        <td><input id="txtAPFNonFunded" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td clospan="12">
+                            <input name="submit" type="submit"  value="Add" class="create-facility-button fg-button ui-state-default"/>
+                        </td>
+                    </tr>
+                </table>  
+            <br />              
+            <div class="facility-record-list"></div>     
         </div>
         <div id="tab-4"> 
-            <h2>Tab4</h2>       
+            <table class="cibStatusEntry">
+                <tr>
+                    <th>Nature of Facility</th>
+                    <th>Customer Liability Limit</th>
+                    <th>Customer Liability O/S</th>
+                    <th>Allied Liability Limit</th>
+                    <th>Allied Liability O/S</th>                        
+                </tr>
+                <tr>
+                    <td>
+                        <input id="rdFunded" type="radio" name="rdNOF" value="1" checked="checked"/>Funded
+                        <input id="rdNonFunded" type="radio" name="rdNOF" value="2"/>Non-Funded
+                    </td>
+                    <td><input id="txtCustLimit" type="text" /></td>
+                    <td><input id="txtCustOS" type="text" /></td>
+                    <td><input id="txtAlliedLimit" type="text" /></td>
+                    <td><input id="txtAlliedOS" type="text" /></td>                        
+                </tr>
+                <tr>
+                    <td clospan="12">
+                        <input name="submit" type="submit"  value="Add" class="create-cibstatus-button fg-button ui-state-default"/><br/><br/>
+                    </td>
+                </tr>
+            </table>                
+            <div class="cibstatus-record-list"></div>      
         </div>
         <div id="tab-5"> 
             <h2>Tab5</h2>       
@@ -264,11 +336,23 @@
 
         BindUserList();
 
+        // Faciluty Details
+        PopulateFacilityList();
+        
+
         var creditId = getUrlVars()["creditId"]; //parseInt(getUrlVars()["creditId"], 10);
+        var isNew = getUrlVars()["isNew"];
         txtId.value = creditId;
+        $('#txtId').val(creditId);
+
         if (creditId) {
+            if (isNew) {
+                $("#tabs").tabs('enable', 1).tabs('select', 1)
+            }
             PopulateCreditBasicInfo(creditId);
-            PopulateRelationshipSummaryList();
+            PopulateRelationshipSummaryList(creditId);
+            BindFacilityList(creditId);
+            PopulateCIBStatusTable(creditId);
         }
 
         // Status
@@ -321,24 +405,19 @@
                 dataType: "json",
                 success: function (data) {
 
-                    // Newly created credit id
-                    $('#txtId').value = data.createdCreditInfoId;
-
-                    // Hide loader
-                    showActionLoader(false);
-
-                    // Clear data
                     clearData();
 
-                    // Show message
-                    $('#message').html('Credit proposal has been created successfully!').addClass('success-message').show();
-                    setTimeout(function () {
-                        $('#message').html('').removeClass('success-message').hide();
-                    }, 5000);
+                    window.location = '/Credit/AddCredit?creditId=' + data.createdCreditInfoId + '&isNew=true';                    
+
+                    //// Show message
+                    //$('#message').html('Credit proposal has been created successfully!').addClass('success-message').show();
+                    //setTimeout(function () {
+                    //    $('#message').html('').removeClass('success-message').hide();
+                    //}, 5000);
                         
                 },
                 Error: function () {
-                    showError("Error to execute ajax call");
+                    $('#message').html('Failed to save the record!').addClass('success-message').show();
                 }
             });
         });
@@ -347,9 +426,8 @@
         $("#btnRelationshipSummary").click(function (e) {
             e.preventDefault();
 
-            var key = $("#txtId").val();
-            var creditInfoId = key ? key : 0;
-
+            var creditInfoId = parseInt(getUrlVars()["creditId"], 10);
+            
             var natureOfFacility = $("#ddlNatureOfFacility").val();
             var sanctionDate = '2013-12-30'; //$("#dpSanctionDate").datepicker("getDate");
             var fundedLimit = $('#txtFundedLimit').val();
@@ -378,7 +456,7 @@
                 dataType: "json",
                 success: function (data) {
 
-                    PopulateRelationshipSummaryList();
+                    PopulateRelationshipSummaryList(creditInfoId);
 
                     $("#dpSanctionDate").val('');
                     $("#txtFundedLimit").val('');
@@ -409,11 +487,12 @@
             return vars;
         }
 
-        function PopulateRelationshipSummaryList() {
+        function PopulateRelationshipSummaryList(creditId) {
             $.ajax({
                 type: "GET",
                 url: "@Url.Action("GetRelationshipSummaryList", "Credit")",
-                        data: { creditId: $("#txtId").val() },
+                        //data: { creditId: $("#txtId").val() },
+                        data: { creditId: creditId },
                         cache: false,
                         dataType: "json",
                         success: function (data) {
@@ -548,70 +627,229 @@
                 showError("Error to execute ajax call");
             }
         });
-    }
-
-    function BindEmployeeTypeList() {
-
-        // Ajax call
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("GetEmployeeTypeList", "Employee")",
-            cache: false,
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (i, item) {
-                    var option = new Option(item.Name, item.EmployeeTypeId);
-                    $('#ddlEmployeeType').append(option);
-                });                
-            },
-            error: function (error) {
-                showError("Error to execute ajax call");
-            }
-        });
-    }//end loadCompany
-
-    function BindEmployee(id) {
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("GetEmployee", "Employee")",
-            cache: false,
-            dataType: "json",
-            data: {id: id},
-            success: function (data) {                
-                txtId.value = data.EmployeeId;
-                txtName.value = data.Name;
-                ddlEmployeeType.value = data.EmployeeTypeId;
-                ckbOT.checked = data.IsOTApplicable;
-            },
-            error: function () {
-                showError("Error to execute ajax call");
-            }
-        });
-    }
-
-    function DeleteEmployee(id) {
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("DeleteEmployee", "Employee")",
-            cache: false,
-            dataType: "json",
-            data: { id: id },
-            success: function (data) {
-
-                BindRecordList();
-            },
-            error: function () {
-                showError("Error to execute ajax call");
-            }
-        });
-    }
+    }    
 
     function clearData() {
         $("#txtId").val('');
         $("#txtInfo").val('');
         $("#ddlClient").empty();               
     }
+
+    // ******* Facility Section *********//
+    // Create company
+    $(".create-facility-button").click(function (e) {
+        e.preventDefault();
+
+        var creditInfoId = parseInt(getUrlVars()["creditId"], 10);
+        var NatureOfFacilityId = $("#ddlFacility").val();
+        var ELFunded = $("#txtELFunded").val();
+        var ELNonFunded = $("#txtELNonFunded").val();
+        var POSFunded = $("#txtPOSFunded").val();
+        var POSNonFunded = $("#txtPOSNonFunded").val();
+        var Validity = $("#txtValidity").val();
+        var EOL = $("#txtEOL").val();
+        var LYTurnOver = $("#txtLYTurnOver").val();
+        var ODInstNO = $("#txtODInstNO").val();
+        var ODInstAmout = $("#txtODInstAmout").val();
+        var CLStatus = $("#txtCLStatus").val();
+        var APFFunded = $("#txtAPFFunded").val();
+        var APFNonFunded = $("#txtAPFNonFunded").val();
+        var FacilityFor = 1; //TODO Hard coded - it may be cust or sisterId
+
+
+        // Prepare data transfer object
+        var FacilityDetailsDTO = {
+            CreditInfoId: creditInfoId,
+            NatureOfFacility: NatureOfFacilityId,
+            ELFunded: ELFunded,
+            ELNonFunded: ELNonFunded,
+            POSFunded: POSFunded,
+            POSNonFunded: POSNonFunded,
+            Validity: Validity,
+            EOL: EOL,
+            LYTurnOver: LYTurnOver,
+            OverdueInstNo: ODInstNO,
+            OverdueInstAmount: ODInstAmout,
+            CLStatus: CLStatus,
+            APFFunded: APFFunded,
+            APFNonFunded: APFNonFunded,
+            FaiclityFor: FacilityFor
+        };
+
+        // Show loader
+        showActionLoader(true, 'Saving Facility Information');
+
+        // Ajax call
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveFacilityDetail", "Credit")",
+                data: FacilityDetailsDTO,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    BindFacilityList(creditInfoId);
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+        function BindFacilityList(creditInfoId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetFacilityDetailList", "Credit")",
+                data: { creditInfoId: creditInfoId },
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                // Renter the records
+                $(".facility-record-list").html(data.html);
+                $('#facilityRecordList', $(".facility-record-list")).dataTable(
+                    {
+                        "sScrollX": "100%",
+                        "sScrollXInner": "110%",
+                        "bScrollCollapse": true,
+                        "bPaginate": false,
+                        "bFilter": false,
+                        "bInfo": false
+                        //"fnFooterCallback": function (nRow, aaData, iStart, iEnd, aiDisplay) {
+                        //    /*
+                        //     * TODO - Need to calculate total 
+                        //     */
+
+                        //    /* Updated footer row with total*/
+                        //    var footerCells = nRow.getElementsByTagName('th');
+                        //    footerCells[1].innerHTML = 'Total will be shown here (need to be implemented)';
+                        //}
+                    }
+                );
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+            });
+    }    
+
+    function PopulateFacilityList() {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("GetNatureOfFacilities", "Credit")",
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    var option = new Option(item.Value, item.Key);
+                    $('#ddlFacility').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+    //***********End of Facility Section ************//
+
+    // ******* CIB Section *********//
+    function ToFixedDecimalPlaces(numberToBeFixedPlace, nunberOfDecimalPlaces) {
+        var processedNumber = Math.round(numberToBeFixedPlace * Math.pow(10, nunberOfDecimalPlaces)) / Math.pow(10, nunberOfDecimalPlaces);
+        return parseFloat(processedNumber);
+    }
+
+    // Create cib status 
+    $(".create-cibstatus-button").click(function (e) {
+        e.preventDefault();
+
+        var id = 0; //Adding new record
+        var creditInfoId = parseInt(getUrlVars()["creditId"], 10);
+        var FundedOrNonFunded = $('input[name=rdNOF]:checked', '.cibStatusEntry').val() * 1;
+        var CustLimit = $("#txtCustLimit").val();
+        var CustOS = $("#txtCustOS").val();
+        var AlliedLimit = $("#txtAlliedLimit").val();
+        var AlliedOS = $("#txtAlliedOS").val();
+        //var ReportDate = new Date;
+
+        // Prepare data transfer object
+        var cibStatusDTO = {
+            CIBStatusId: id,
+            CreditInfoId: creditInfoId,
+            NOF: FundedOrNonFunded,
+            CustLimit: CustLimit,
+            CustOS: CustOS,
+            AlliedLimit: AlliedLimit,
+            AlliedOS: AlliedOS
+        };
+
+        // Show loader
+        showActionLoader(true, 'Saving CIB Status Information');
+
+        // Ajax call
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveCIBStatus", "Credit")",
+                data: cibStatusDTO,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Hide loader
+                    showActionLoader(false);
+                    // Clear text fileds
+                    $(".cibStatusEntry :text").val('');
+                    PopulateCIBStatusTable(creditInfoId);
+
+                    // Show message
+                    $('#message').html('CIBStatus record has been addded successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#message').html('').removeClass('success-message').hide();
+                    }, 5000);
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
+
+        function PopulateCIBStatusTable(creditInfoId) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetCIBStatusList", "Credit")",
+                cache: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    // Renter the records
+                    $(".cibstatus-record-list").html(data.html);
+                    $('#cibStatusRecordList', $(".cibstatus-record-list")).dataTable({
+                        "fnFooterCallback": function (nRow, aaData, iStart, iEnd, aiDisplay) {
+
+                            var nColumnTotals = [0, 0, 0, 0];
+                            for (var i = 0 ; i < aaData.length; i++) {
+                                nColumnTotals[0] += Number(aaData[i][1]);
+                                nColumnTotals[1] += Number(aaData[i][2]);
+                                nColumnTotals[2] += Number(aaData[i][3]);
+                                nColumnTotals[3] += Number(aaData[i][4]);
+                            }
+
+                            var nCells = nRow.getElementsByTagName('th');
+                            nCells[1].innerHTML = ToFixedDecimalPlaces(nColumnTotals[0], 2);
+                            nCells[2].innerHTML = ToFixedDecimalPlaces(nColumnTotals[1], 2);
+                            nCells[3].innerHTML = ToFixedDecimalPlaces(nColumnTotals[2], 2);
+                            nCells[4].innerHTML = ToFixedDecimalPlaces(nColumnTotals[3], 2);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    showError("Error to execute ajax call");
+                }
+            });
+        }
+
+        //***********End of CIBStatus Section ************//
 
 </script>

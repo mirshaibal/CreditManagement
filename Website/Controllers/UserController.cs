@@ -54,7 +54,7 @@ namespace Website.Controllers
                 || user.Role.Name.ToLower() == "board")
             {
 
-                int creditInfoId = 24; // int.Parse(Request.QueryString.Get("creditId"));
+                int creditInfoId = 66; // int.Parse(Request.QueryString["creditId"].ToString());
                 var creditInfo = (from c in _dbContext.CreditInfoes
                                   where c.CreditInfoId == creditInfoId
                                   select c).FirstOrDefault();

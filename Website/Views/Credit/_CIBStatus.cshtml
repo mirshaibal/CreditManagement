@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DataObjects.Models.CIBStatu>
+@using Helpers
+<table id="cibStatusRecordList">
+    <thead>
+        <tr>
+            <th>Nature of Facility</th>
+            <th>Customer Liability Limit</th>
+            <th>Customer Liability O/S</th>
+            <th>Allied Liability Limit</th>
+            <th>Allied Liability O/S</th>
+            <th>Report Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var nofId = Convert.ToInt32(item.NOF);
+                        var nofName = nofId == 1 ? "Funded" : "Non Funded";
+                        @nofName
+                    }
+                </td>
+                <td>@item.CustLimit.ToString()</td>
+                <td>@item.CustOS.ToString()</td>
+                <td>@item.AlliedLimit.ToString()</td>
+                <td>@item.AlliedOS.ToString()</td>
+                <td>
+                    @{
+                        if (item.ReportDate != null)
+                        {
+                            var reportDate = Convert.ToDateTime(item.ReportDate);
+                            @reportDate.ToString("dd-mm-yyyy")
+                        }
+                    }
+                </td>                
+            </tr>            
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Total:</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>            
+        </tr>
+    </tfoot>
+</table>

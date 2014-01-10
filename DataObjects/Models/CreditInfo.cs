@@ -9,6 +9,7 @@ namespace DataObjects.Models
         {
             this.CreditFiles = new List<CreditFile>();
             this.CreditFlows = new List<CreditFlow>();
+            this.FacilityDetails = new List<FacilityDetail>();
             this.RelationshipSummaries = new List<RelationshipSummary>();
         }
 
@@ -33,6 +34,7 @@ namespace DataObjects.Models
         public virtual ICollection<CreditFlow> CreditFlows { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual ICollection<FacilityDetail> FacilityDetails { get; set; }
         public virtual ICollection<RelationshipSummary> RelationshipSummaries { get; set; }
     }
 }

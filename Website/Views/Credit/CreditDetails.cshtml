@@ -7,7 +7,31 @@
 <div class="panel">
 
     <div id="creditInfo"></div>
-    <div style="clear:both;"></div>        
+    <div style="clear:both;"></div>
+
+@*    <fieldset>
+        <legend>Branch Information</legend>
+        
+    </fieldset>*@    
+
+    <fieldset>
+        <legend>Relationship Summary</legend>
+        <div id="relationshipSummaryList"></div>
+    </fieldset>
+
+    <fieldset>
+        <legend>CIB Status</legend>
+        <div id="cibList"></div>
+    </fieldset>
+    
+    <div style="overflow-x:hidden;">
+    <fieldset>
+        <legend>Facility Details</legend>
+        <div >
+            <div id="facilityDetailList"></div>
+        </div>        
+    </fieldset>
+    </div>
 
     <fieldset>
         <legend>Your Review</legend>
@@ -69,8 +93,102 @@
 
         BindCreditInfoById(creditId);
 
+        PopulateRelationshipSummaryList(creditId);
+
+        FacilityDetailList(creditId);
+
+        PopulateCIBStatusTable(creditId);
+
         BindUserList();
     });
+
+    //----------------------------------------------------------------------------------------------
+    function PopulateRelationshipSummaryList(creditId) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetRelationshipSummaryList", "Credit")",
+                data: { creditId: creditId },
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    $('#relationshipSummaryList').html(data.html);
+                    $('#recordList').dataTable({
+                        "bPaginate": false,
+                        "bFilter": false,
+                        "bInfo": false
+                    });
+                },
+                error: function (xhr, status, error) {
+                    showError("Error to execute ajax call");
+                }
+            });
+    }
+
+    function FacilityDetailList(creditId) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetFacilityDetailList", "Credit")",
+            data: { creditInfoId: creditId },
+            cache: false,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#facilityDetailList').html(data.html);
+                $('#facilityRecordList').dataTable(
+                    {
+                        "sScrollX": "100%",
+                        "sScrollXInner": "110%",
+                        "bScrollCollapse": true,
+                        "bPaginate": false,
+                        "bFilter": false,
+                        "bInfo": false                  
+                    }
+                );              
+            },
+            error: function (xhr, status, error) {
+                showError("Error to execute ajax call");
+            }
+        });
+    }
+
+    function PopulateCIBStatusTable(creditInfoId) {
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetCIBStatusList", "Credit")",
+                cache: false,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    // Renter the records
+                    $("#cibList").html(data.html);
+                    $('#cibStatusRecordList').dataTable({
+                        "fnFooterCallback": function (nRow, aaData, iStart, iEnd, aiDisplay) {
+
+                            var nColumnTotals = [0, 0, 0, 0];
+                            for (var i = 0 ; i < aaData.length; i++) {
+                                nColumnTotals[0] += Number(aaData[i][1]);
+                                nColumnTotals[1] += Number(aaData[i][2]);
+                                nColumnTotals[2] += Number(aaData[i][3]);
+                                nColumnTotals[3] += Number(aaData[i][4]);
+                            }
+
+                            var nCells = nRow.getElementsByTagName('th');
+                            nCells[1].innerHTML = ToFixedDecimalPlaces(nColumnTotals[0], 2);
+                            nCells[2].innerHTML = ToFixedDecimalPlaces(nColumnTotals[1], 2);
+                            nCells[3].innerHTML = ToFixedDecimalPlaces(nColumnTotals[2], 2);
+                            nCells[4].innerHTML = ToFixedDecimalPlaces(nColumnTotals[3], 2);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    showError("Error to execute ajax call");
+                }
+            });
+        }
+
+    
+    //----------------------------------------------------------------------------------------------
 
     // Read a page's GET URL variables and return them as an associative array.
     function getUrlVars() {
@@ -183,7 +301,7 @@
                         else {
                             $('#trSecurityMessage').hide();
 
-                            AssignCreditProposal(creditFlow);
+                            AssignCreditProposal(creditFlow, 1);
                             $(this).dialog("close");
                         }                        
                     },
@@ -194,7 +312,7 @@
             });
         }
         else {
-            AssignCreditProposal(creditFlow);
+            AssignCreditProposal(creditFlow, 0);
         }        
     });
 

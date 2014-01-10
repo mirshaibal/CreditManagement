@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="indicator"></div>
+<div style="display: none;" id="loggedInUserId">@ViewBag.LoggedInUserId</div>
+
 <div class="panel">
 
     <div id="tabs">
@@ -13,12 +16,18 @@
         </ul>
         <div id="tab-1">
             <table>
+                <tr style="display: none;">
+                    <td>Id:</td>
+                    <td>
+                        <input id="txtClientId" type="text" />
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <label>Name</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input type="text" id="txtClientName" />
                     </td>
                 </tr>
                 <tr>
@@ -26,7 +35,7 @@
                         <label>Address</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtClientAddress" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +43,7 @@
                         <label>Corporate Address</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtClientCorporateAddress" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -42,27 +51,36 @@
                         <label>Factory Address</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtClientFactoryAddress" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label>Nature of Business</label>
                     </td>
-                    <td>
-                        <select>
-                            <option>SELECT</option>
-                        </select>
+                    <td style="padding-bottom: 4px;">
+                        <input type="checkbox" name="client-business-nature" value="Importer" />Importer<br>
+                        <input type="checkbox" name="client-business-nature" value="Exporter" />Exporter<br>
+                        <input type="checkbox" name="client-business-nature" value="Wholesaler" />Wholesaler<br>
+                        <input type="checkbox" name="client-business-nature" value="Manufacturer" />Manufacturer<br>
+                        <input type="checkbox" name="client-business-nature" value="Distributor" />Distributor<br>
+                        <input type="checkbox" name="client-business-nature" value="Contractor" />Contractor<br>
+                        <input type="checkbox" name="client-business-nature" value="Supplier" />Supplier<br>
+                        <input type="checkbox" name="client-business-nature" value="Developer" />Developer<br>
+                        <input type="checkbox" name="client-business-nature" value="Stockiest" />Stockiest<br>
+                        <input type="checkbox" name="client-business-nature" value="Retailer" />Retailer<br>
+                        <input type="checkbox" name="client-business-nature" value="100% Garments Industry" />100% Garments Industry<br>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <label>Nature of Constitution</label>
                     </td>
-                    <td>
-                        <select>
-                            <option>SELECT</option>
-                        </select>
+                    <td style="padding-bottom: 4px;">
+                        <input type="checkbox" name="client-constitution-nature" value="Limited Company" />Limited Company<br>
+                        <input type="checkbox" name="client-constitution-nature" value="Partnership" />Partnership<br>
+                        <input type="checkbox" name="client-constitution-nature" value="Proprietorship" />Proprietorship<br>
+                        <input type="checkbox" name="client-constitution-nature" value="Others" />Others<br>                        
                     </td>
                 </tr>
                 <tr>
@@ -70,7 +88,7 @@
                         <label>Date of Incorporation</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input type="text" id="dpClientIncorporationDate" />
                     </td>
                 </tr>
                 <tr>
@@ -78,7 +96,7 @@
                         <label>Products</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtClientProducts" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -86,7 +104,7 @@
                         <label>Authorized Capital</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtClientAuthorizedCapital" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -94,14 +112,17 @@
                         <label>Paid-up Capital</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtClientPaidupCapital" type="text" />
                     </td>
                 </tr>
+            </table>
+            <table>
                 <tr>
-                    <td></td>
                     <td>
-                        <button>Save</button>
-                        <button>Cancel</button>
+                        <input name="submit" type="submit" value="Save Client" id="create-client-button" class="fg-button ui-state-default" />
+                    </td>
+                    <td>
+                        <div id="client-message"></div>
                     </td>
                 </tr>
             </table>
@@ -113,7 +134,7 @@
                         <label>Name</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminName" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -121,7 +142,7 @@
                         <label>Father's Name</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminFatherName" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -129,7 +150,7 @@
                         <label>Mother's Name</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminMotherName" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -137,7 +158,7 @@
                         <label>Address</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtAdminAddress" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -145,7 +166,7 @@
                         <label>Age</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminAge" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -153,7 +174,7 @@
                         <label>Education</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminEducation" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -161,7 +182,7 @@
                         <label>Background Details</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtAdminBackgroundDetails" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -169,7 +190,7 @@
                         <label>Business Experience</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminBusinessExperience" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -177,26 +198,29 @@
                         <label>Position</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtAdminPosition" type="text" />
                     </td>
                 </tr>
+            </table>
+            <table>
                 <tr>
-                    <td></td>
                     <td>
-                        <button>Save</button>
-                        <button>Cancel</button>
+                        <input name="submit" type="submit" value="Save" class="create-client-admin-info-button fg-button ui-state-default" />
+                    </td>
+                    <td>
+                        <div id="client-admin-info-message"></div>
                     </td>
                 </tr>
             </table>
         </div>
         <div id="tab-3">
-           <table>
+            <table>
                 <tr>
                     <td>
                         <label>Name</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtSisterName" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -204,7 +228,7 @@
                         <label>Address</label>
                     </td>
                     <td>
-                        <textarea cols="50" rows="5"></textarea>
+                        <textarea id="txtSisterAddress" cols="50" rows="5"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -212,7 +236,7 @@
                         <label>National ID No</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtSisterNationalID" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -220,7 +244,7 @@
                         <label>Holding Shares</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtSisterHoldingShare" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -228,7 +252,7 @@
                         <label>Percentage</label>
                     </td>
                     <td>
-                       <input type="text" />
+                        <input id="txtSisterPercentage" type="text" />
                     </td>
                 </tr>
                 <tr>
@@ -236,14 +260,17 @@
                         <label>PNW</label>
                     </td>
                     <td>
-                        <input type="text" />
+                        <input id="txtSisterPNW" type="text" />
                     </td>
                 </tr>
+            </table>
+            <table>
                 <tr>
-                    <td></td>
                     <td>
-                        <button>Save</button>
-                        <button>Cancel</button>
+                        <input name="submit" type="submit" value="Save" class="create-client-sister-concern-button fg-button ui-state-default" />
+                    </td>
+                    <td>
+                        <div id="client-sister-concern-message"></div>
                     </td>
                 </tr>
             </table>
@@ -254,9 +281,91 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
         // Initialize tabs
         $("#tabs").tabs();
+        //initially enable first tab. If any client is created then enable other tabs
+        //$("#tabs").tabs({ disabled: [1, 2] });
+
+        // Initialize date picker
+        $("#dpClientIncorporationDate").datepicker();
+
+        // Create company
+        $("#create-client-button").click(function (e) {
+            e.preventDefault();
+
+            var key = $("#txtClientId").val();
+            var id = key ? key : 0;
+
+            var name = $("#txtClientName").val();
+            var address = $("#txtClientAddress").val();
+            var authorizedCapital = $("#txtClientAuthorizedCapital").val();
+            var corporateAddress = $("#txtClientCorporateAddress").val();
+            var factoryAddress = $("#txtClientFactoryAddress").val();
+            var paidupCapital = $("#txtClientPaidupCapital").val();
+            var products = $("#txtClientProducts").val();
+            var profit = $("#txtProfit").val();
+            var incorporateDate = $("#dpClientIncorporationDate").val();
+
+            var natureOfBusinessVals = $.map($('input:checkbox[name="client-business-nature"]:checked'), function (a) { return a.value; });
+            var natureOfBusiness = natureOfBusinessVals.join('|');
+
+            var natureOfConstitutionVals = $.map($('input:checkbox[name="client-constitution-nature"]:checked'), function (a) { return a.value; });
+            var natureOfConstitution = natureOfConstitutionVals.join('|');
+
+            // Prepare the department object
+            var clientInfo = {
+                ClientId: id, Name: name, Address: address, CorporateAddress: corporateAddress, FactoryAddress: factoryAddress,
+                BusinessNature: natureOfBusiness, ConstitutionNature: natureOfConstitution,
+                IncorporationDate: incorporateDate, Products: products, AuthorizedCapital: authorizedCapital, PaidupCapital: paidupCapital,
+                BranchId: 1
+            };
+
+            // Show loader
+            showActionLoader(true, 'Saving Client Information');
+
+            // Ajax call
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveClientInfo", "Client")",
+                data: clientInfo,
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+
+                    // Newly created credit id
+                    $('#txtClientId').value = data.ClientId;
+
+                    // Hide loader
+                    showActionLoader(false);
+
+                    // Clear data
+                    clearClientData();
+
+                    // Show message
+                    $('#client-message').html('Client info has been created successfully!').addClass('success-message').show();
+                    setTimeout(function () {
+                        $('#client-message').html('').removeClass('success-message').hide();
+                    }, 5000);
+
+                },
+                Error: function () {
+                    showError("Error to execute ajax call");
+                }
+            });
+        });
     });
+
+    function clearClientData() {
+        txtClientName.value = "";
+        txtClientAddress.value = "";
+        txtClientAuthorizedCapital.value = "";
+        txtClientCorporateAddress.value = "";
+        txtClientFactoryAddress.value = "";
+        txtClientPaidupCapital.value = "";
+        txtClientProducts.value = "";
+        dpClientIncorporationDate.valu = "";
+        $(':checkbox').prop('checked', false);
+        $('#dpClientIncorporationDate').val("");
+    }
 
 </script>
